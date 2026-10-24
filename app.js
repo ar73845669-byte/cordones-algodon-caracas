@@ -272,7 +272,7 @@ const appCart = new CartState();
 // ==========================================================================
 // 3. THREE.JS 3D INTERACTIVE SPOOL (HERO SECTION)
 // ==========================================================================
-let threeScene, threeCamera, threeRenderer, threeSpoolGroup, threeCordMaterial;
+let threeScene, threeCamera, threeRenderer, threeSpoolGroup, threeCordMaterial, threeCutWallMaterial;
 let threeControls;
 let isAutoRotating = true;
 let active3DColor = CORD_COLORS[0]; // Beige by default
@@ -287,9 +287,9 @@ function initThreeExperience() {
   // Scene
   threeScene = new THREE.Scene();
 
-  // Camera
+  // Camera - positioned to view the elegant 3D strand and cut tip
   threeCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
-  threeCamera.position.set(0, 2.5, 12);
+  threeCamera.position.set(0, 1.8, 8.5);
 
   // Renderer
   threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -299,14 +299,14 @@ function initThreeExperience() {
   threeRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
   container.appendChild(threeRenderer.domElement);
 
-  // OrbitControls
+  // OrbitControls - minDistance of 0.8 enables extreme close-up macro zoom into the inner core!
   if (typeof THREE.OrbitControls !== 'undefined') {
     threeControls = new THREE.OrbitControls(threeCamera, threeRenderer.domElement);
     threeControls.enableDamping = true;
     threeControls.dampingFactor = 0.05;
     threeControls.enableZoom = true;
-    threeControls.minDistance = 6;
-    threeControls.maxDistance = 18;
+    threeControls.minDistance = 0.8;
+    threeControls.maxDistance = 16;
     threeControls.maxPolarAngle = Math.PI / 2 + 0.3; // Prevent flipping under ground
   }
 
@@ -366,168 +366,108 @@ function initThreeExperience() {
 }
 
 /**
- * Generate a procedural paper label texture based on the real imported packaging in Caracas
- * Matches the white paper sleeve from the reference photograph with "ECO-FRIENDLY BRAIDED ROPE 6.0"
+ * Generate an ultra-high resolution procedural 1024x1024 bump and normal texture
+ * reproducing a 16-carrier tubular diamond-braided combed cotton rope with individual spun fiber striations
  */
-function createPaperLabelTexture() {
+function createHighResBraidedTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
-  canvas.height = 512;
+  canvas.height = 1024;
   const ctx = canvas.getContext('2d');
 
-  // 1. Off-white textured paper background
-  ctx.fillStyle = '#FAF8F5';
-  ctx.fillRect(0, 0, 1024, 512);
+  // Neutral mid-gray base for bump mapping
+  ctx.fillStyle = '#808080';
+  ctx.fillRect(0, 0, 1024, 1024);
 
-  // Subtle paper grain/speckles
-  ctx.fillStyle = 'rgba(62, 39, 35, 0.025)';
-  for (let i = 0; i < 3000; i++) {
-    const rx = Math.random() * 1024;
-    const ry = Math.random() * 512;
-    ctx.fillRect(rx, ry, 1.5, 1.5);
-  }
+  const numBands = 32;
+  const bandWidth = 1024 / (numBands / 2); // ~64px wide
 
-  // 2. Decorative border lines along top and bottom edges
-  ctx.strokeStyle = '#2B1B17';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(8, 8, 1008, 496);
+  // Direction 1: 16 strands traveling diagonally (top-left to bottom-right)
+  for (let b = -numBands; b < numBands * 2; b++) {
+    const x0 = b * bandWidth;
+    
+    // Rounded 3D yarn ribbon gradient
+    const grad1 = ctx.createLinearGradient(x0, 0, x0 + bandWidth, 0);
+    grad1.addColorStop(0, '#282828');     // Shadow seam
+    grad1.addColorStop(0.2, '#959595');   // Shoulder
+    grad1.addColorStop(0.5, '#FFFFFF');   // Rounded crest highlight
+    grad1.addColorStop(0.8, '#A0A0A0');   // Shoulder
+    grad1.addColorStop(1, '#202020');     // Shadow seam
 
-  ctx.strokeStyle = 'rgba(200, 109, 81, 0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(14, 14, 996, 484);
-
-  // Helper to draw the label artwork on a given horizontal center (front & back)
-  function drawLabelSection(centerX) {
     ctx.save();
-    ctx.translate(centerX, 256);
-
-    // Circular Logo Emblem (interlaced braid loop from photo)
-    ctx.strokeStyle = '#2B1B17';
-    ctx.lineWidth = 3.5;
     ctx.beginPath();
-    ctx.arc(0, -125, 42, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.moveTo(x0, 0);
+    ctx.lineTo(x0 + 1024, 1024);
+    ctx.lineTo(x0 + bandWidth + 1024, 1024);
+    ctx.lineTo(x0 + bandWidth, 0);
+    ctx.closePath();
+    ctx.fillStyle = grad1;
+    ctx.fill();
 
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(0, -125, 37, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // S-curve braid inside logo
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#C86D51';
-    ctx.beginPath();
-    ctx.arc(-8, -132, 14, -Math.PI * 0.2, Math.PI * 0.9);
-    ctx.arc(8, -118, 14, Math.PI * 0.8, -Math.PI * 0.3, true);
-    ctx.stroke();
-
-    // Text: ECO-FRIENDLY
-    ctx.fillStyle = '#2B1B17';
-    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.letterSpacing = '5px';
-    ctx.fillText('ECO-FRIENDLY', 0, -52);
-
-    // Main Title: BRAIDED ROPE 6.0
-    ctx.font = '800 46px "Plus Jakarta Sans", sans-serif';
-    ctx.letterSpacing = '1px';
-    ctx.fillText('BRAIDED ROPE 6.0', 0, 0);
-
-    // Thin separator line
-    ctx.strokeStyle = '#C86D51';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(-160, 20);
-    ctx.lineTo(160, 20);
-    ctx.stroke();
-
-    // Subtitle: 100% Cotton with Inner Core
-    ctx.fillStyle = '#5D4037';
-    ctx.font = '600 18px "Plus Jakarta Sans", sans-serif';
-    ctx.letterSpacing = '2px';
-    ctx.fillText('CORDÓN DE ALGODÓN CON ALMA', 0, 50);
-
-    // Badge / Brand
-    ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = '#2B1B17';
-    ctx.fillText('HILATURA CARACAS · CALIDAD DE IMPORTACIÓN', 0, 95);
-
-    // Technical mini-spec box
-    ctx.strokeStyle = 'rgba(62, 39, 35, 0.25)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(-120, 120, 240, 42);
-    ctx.font = '600 13px monospace';
-    ctx.fillStyle = '#5D4037';
-    ctx.fillText('CAL: 6.0mm · NÚCLEO ALTA TENACIDAD', 0, 146);
-
+    // Individual spun fiber striations inside this yarn bundle
+    for (let f = 1; f < 6; f++) {
+      const fx = x0 + (f * bandWidth / 6);
+      ctx.strokeStyle = (f % 2 === 0) ? 'rgba(255, 255, 255, 0.28)' : 'rgba(0, 0, 0, 0.32)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(fx, 0);
+      ctx.lineTo(fx + 1024, 1024);
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
-  // Draw front side (centered at U=0.25 -> X=256)
-  drawLabelSection(256);
-  // Draw back side (centered at U=0.75 -> X=768)
-  drawLabelSection(768);
+  // Direction 2: 16 strands traveling diagonally (top-right to bottom-left)
+  for (let b = -numBands; b < numBands * 2; b++) {
+    const x0 = b * bandWidth;
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
-  return texture;
-}
+    const grad2 = ctx.createLinearGradient(x0, 0, x0 + bandWidth, 0);
+    grad2.addColorStop(0, '#1E1E1E');
+    grad2.addColorStop(0.25, '#888888');
+    grad2.addColorStop(0.5, '#F0F0F0');
+    grad2.addColorStop(0.75, '#909090');
+    grad2.addColorStop(1, '#181818');
 
-/**
- * Procedural diamond-braid cotton texture (16-carrier weave)
- */
-function createBraidedTextureMap() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = '#808080';
-  ctx.fillRect(0, 0, 512, 512);
-
-  const step = 28;
-  for (let x = -512; x < 1024; x += step) {
-    ctx.strokeStyle = '#E8E8E8';
-    ctx.lineWidth = 12;
+    ctx.save();
     ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x + 512, 512);
-    ctx.stroke();
+    ctx.moveTo(x0, 0);
+    ctx.lineTo(x0 - 1024, 1024);
+    ctx.lineTo(x0 + bandWidth - 1024, 1024);
+    ctx.lineTo(x0 + bandWidth, 0);
+    ctx.closePath();
+    ctx.fillStyle = grad2;
+    ctx.fill();
 
-    ctx.strokeStyle = '#282828';
-    ctx.lineWidth = 3.5;
-    ctx.beginPath();
-    ctx.moveTo(x + 6, 0);
-    ctx.lineTo(x + 518, 512);
-    ctx.stroke();
+    // Spun fiber micro-threads
+    for (let f = 1; f < 6; f++) {
+      const fx = x0 + (f * bandWidth / 6);
+      ctx.strokeStyle = (f % 2 === 0) ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.3)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(fx, 0);
+      ctx.lineTo(fx - 1024, 1024);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
 
-  for (let x = -512; x < 1024; x += step) {
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 12;
-    ctx.beginPath();
-    ctx.moveTo(x + 512, 0);
-    ctx.lineTo(x, 512);
-    ctx.stroke();
-
-    ctx.strokeStyle = '#202020';
-    ctx.lineWidth = 3.5;
-    ctx.beginPath();
-    ctx.moveTo(x + 518, 0);
-    ctx.lineTo(x + 6, 512);
-    ctx.stroke();
+  // Soft organic cotton micro-fuzz / fiber noise
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
+  for (let i = 0; i < 9000; i++) {
+    const rx = Math.random() * 1024;
+    const ry = Math.random() * 1024;
+    ctx.fillRect(rx, ry, 1.5, 1.5);
   }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(18, 4);
+  texture.repeat.set(32, 4); // Scaled for authentic 6.0 mm cord diamond proportion
   return texture;
 }
 
 /**
- * Generate soft contact shadow texture under the bundle
+ * Generate soft contact shadow texture under the cord
  */
 function createShadowTexture() {
   const canvas = document.createElement('canvas');
@@ -537,7 +477,7 @@ function createShadowTexture() {
 
   const gradient = ctx.createRadialGradient(128, 128, 10, 128, 128, 120);
   gradient.addColorStop(0, 'rgba(43, 27, 23, 0.45)');
-  gradient.addColorStop(0.5, 'rgba(43, 27, 23, 0.18)');
+  gradient.addColorStop(0.5, 'rgba(43, 27, 23, 0.15)');
   gradient.addColorStop(1, 'rgba(43, 27, 23, 0)');
 
   ctx.fillStyle = gradient;
@@ -547,152 +487,140 @@ function createShadowTexture() {
 }
 
 /**
- * Assemble the realistic Braided Cord Hank / Bundle (Based on the actual product photo)
+ * Assemble a Single Ultra-Textured Braided Cotton Cord Strand with Exposed 3D Core ("El Alma")
+ * (No labels, no spools, completely pure textile focus)
  */
 function createSpoolMesh() {
   threeSpoolGroup = new THREE.Group();
 
-  // Braided Cotton Material
-  const bumpTex = createBraidedTextureMap();
+  // 1. Ultra-Textured Braided Cotton Sheath Material
+  const bumpTex = createHighResBraidedTexture();
   threeCordMaterial = new THREE.MeshStandardMaterial({
     color: active3DColor.threeColor,
-    roughness: 0.88,
-    metalness: 0.02,
+    roughness: 0.94,
+    metalness: 0.01,
     bumpMap: bumpTex,
-    bumpScale: 0.075
+    bumpScale: 0.12
   });
 
-  // 1. Generate Organic Hank Looped Strands (36 interlaced loops)
-  const strandCount = 36;
-  const cordRadius = 0.165; // Proportional 6.0 mm scale
-
-  for (let i = 0; i < strandCount; i++) {
-    // 3 radial layers: inner core, middle body, outer surface
-    let layerRadiusY, layerRadiusZ;
-    if (i < 8) {
-      // Inner core filler
-      layerRadiusY = 0.35 + (i % 3) * 0.12;
-      layerRadiusZ = 0.25 + (i % 2) * 0.14;
-    } else if (i < 22) {
-      // Middle ring
-      layerRadiusY = 0.65 + ((i * 7) % 5) * 0.06;
-      layerRadiusZ = 0.50 + ((i * 3) % 4) * 0.06;
-    } else {
-      // Outer visible strands
-      layerRadiusY = 0.95 + ((i * 11) % 4) * 0.07;
-      layerRadiusZ = 0.72 + ((i * 5) % 4) * 0.07;
-    }
-
-    const angle = (i / strandCount) * Math.PI * 2 + (i * 0.25);
-    const cosA = Math.cos(angle);
-    const sinA = Math.sin(angle);
-
-    const yEnd = layerRadiusY * cosA;
-    const zEnd = layerRadiusZ * sinA;
-
-    // Natural length jitter on ends so loops stagger realistically like real cloth
-    const leftLen = 3.9 + Math.sin(i * 1.8) * 0.35;
-    const rightLen = 3.9 + Math.cos(i * 2.1) * 0.35;
-
-    // Center compression factor (waist pinched by white paper band)
-    const pinchY = 0.76;
-    const pinchZ = 0.68;
-
-    // 8 points forming a continuous smooth looped curve
-    const pts = [
-      new THREE.Vector3(-leftLen, yEnd * 1.15, zEnd * 1.15),
-      new THREE.Vector3(-2.2, yEnd * 1.02, zEnd * 1.02),
-      new THREE.Vector3(0, yEnd * pinchY, zEnd * pinchZ),
-      new THREE.Vector3(2.2, yEnd * 1.02, zEnd * 1.02),
-      new THREE.Vector3(rightLen, -yEnd * 1.15, -zEnd * 1.15),
-      new THREE.Vector3(2.2, -yEnd * 1.02, -zEnd * 1.02),
-      new THREE.Vector3(0, -yEnd * pinchY, -zEnd * pinchZ),
-      new THREE.Vector3(-2.2, -yEnd * 1.02, -zEnd * 1.02)
-    ];
-
-    const curve = new THREE.CatmullRomCurve3(pts, true);
-    const tubeGeom = new THREE.TubeGeometry(curve, 52, cordRadius, 9, true);
-    const tubeMesh = new THREE.Mesh(tubeGeom, threeCordMaterial);
-    tubeMesh.castShadow = true;
-    tubeMesh.receiveShadow = true;
-    threeSpoolGroup.add(tubeMesh);
-  }
-
-  // 2. White Paper Label Sleeve in the Center ("ECO-FRIENDLY BRAIDED ROPE 6.0")
-  const labelTex = createPaperLabelTexture();
-  const labelMaterial = new THREE.MeshStandardMaterial({
-    map: labelTex,
-    roughness: 0.72,
-    metalness: 0.02,
+  // Cross-section cut wall material (matches the active cord color)
+  threeCutWallMaterial = new THREE.MeshStandardMaterial({
+    color: active3DColor.threeColor,
+    roughness: 0.95,
+    metalness: 0.0,
     side: THREE.DoubleSide
   });
 
-  // Oval sleeve wrapped around center waist
-  const labelGeom = new THREE.CylinderGeometry(1.08, 1.08, 2.25, 48, 1, true);
-  labelGeom.rotateZ(Math.PI / 2); // Orient horizontally along X
-  const labelMesh = new THREE.Mesh(labelGeom, labelMaterial);
-  labelMesh.scale.set(1.0, 0.88, 0.75); // Elliptical wrap hugging the rope bundle
-  labelMesh.castShadow = true;
-  labelMesh.receiveShadow = true;
-  threeSpoolGroup.add(labelMesh);
-
-  // Subtle paper edge trim rings at label borders to give physical paper thickness
-  const paperTrimMat = new THREE.MeshStandardMaterial({ color: 0xE6E0D4, roughness: 0.8 });
-  const trimGeom1 = new THREE.TorusGeometry(1.08, 0.02, 8, 36);
-  trimGeom1.rotateY(Math.PI / 2);
-  const trim1 = new THREE.Mesh(trimGeom1, paperTrimMat);
-  trim1.scale.set(0.75, 0.88, 1.0);
-  trim1.position.x = -1.12;
-  threeSpoolGroup.add(trim1);
-
-  const trim2 = trim1.clone();
-  trim2.position.x = 1.12;
-  threeSpoolGroup.add(trim2);
-
-  // 3. Loose Sample Strand Unfurling with Visible White Core ("Con Alma")
-  const samplePts = [
-    new THREE.Vector3(0.6, 0.15, 0.65),
-    new THREE.Vector3(1.6, -0.25, 1.1),
-    new THREE.Vector3(2.5, -0.9, 1.6),
-    new THREE.Vector3(3.3, -1.6, 2.0)
+  // 2. Continuous Organic 3D Curve for the Single Cord Strand
+  // Curves through the studio space, bringing the cut tip right toward the camera
+  const cordRadius = 0.38; // 6.0 mm scale
+  const cordPoints = [
+    new THREE.Vector3(-4.8, -0.7, -1.8),
+    new THREE.Vector3(-3.2, 1.2, -0.9),
+    new THREE.Vector3(-1.6, -0.7, 0.1),
+    new THREE.Vector3(0.1, 0.9, 0.8),
+    new THREE.Vector3(1.7, -0.4, 1.4),
+    new THREE.Vector3(2.8, 0.3, 2.0),
+    new THREE.Vector3(3.5, 0.0, 2.4)  // Cut tip position
   ];
-  const sampleCurve = new THREE.CatmullRomCurve3(samplePts, false);
-  const sampleGeom = new THREE.TubeGeometry(sampleCurve, 32, cordRadius, 10, false);
-  const sampleMesh = new THREE.Mesh(sampleGeom, threeCordMaterial);
-  sampleMesh.castShadow = true;
-  threeSpoolGroup.add(sampleMesh);
+  const cordCurve = new THREE.CatmullRomCurve3(cordPoints, false, 'catmullrom', 0.5);
 
-  // Exposed White Inner Core ("Alma de poliéster multifilamento")
+  // Outer Braided Jacket Tube Geometry (160 segments for silky smooth curve)
+  const sheathGeom = new THREE.TubeGeometry(cordCurve, 160, cordRadius, 24, false);
+  const sheathMesh = new THREE.Mesh(sheathGeom, threeCordMaterial);
+  sheathMesh.castShadow = true;
+  sheathMesh.receiveShadow = true;
+  threeSpoolGroup.add(sheathMesh);
+
+  // Tangent and position at the cut tip
+  const tipPos = cordCurve.getPointAt(1.0);
+  const tipTangent = cordCurve.getTangentAt(1.0).normalize();
+  const ringQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), tipTangent);
+
+  // 3. Cut Sheath Wall Ring (Cross-section showing the thickness of the cotton jacket)
+  // Outer radius 0.38, inner radius 0.22 (hollow interior cavity where core sits)
+  const cutWallGeom = new THREE.RingGeometry(0.22, 0.38, 32);
+  const cutWallMesh = new THREE.Mesh(cutWallGeom, threeCutWallMaterial);
+  cutWallMesh.position.copy(tipPos);
+  cutWallMesh.quaternion.copy(ringQuat);
+  threeSpoolGroup.add(cutWallMesh);
+
+  // 4. THE 3D INNER CORE ("EL ALMA") - Visible when zooming in!
+  // High-tenacity polyester multifilament core bundle protruding out of the cut tip
+  const coreGroup = new THREE.Group();
+  
+  // Core Material: Bright white synthetic fiber luster, distinct from the cotton sheath
   const coreMat = new THREE.MeshStandardMaterial({
-    color: 0xFAFAFA,
-    roughness: 0.45,
+    color: 0xFCFCFC,
+    roughness: 0.32,
     metalness: 0.05
   });
-  const coreGeom = new THREE.CylinderGeometry(0.08, 0.08, 0.45, 16);
-  const coreMesh = new THREE.Mesh(coreGeom, coreMat);
-  coreMesh.position.set(3.48, -1.78, 2.18);
-  coreMesh.rotation.x = 0.6;
-  coreMesh.rotation.z = -0.55;
-  threeSpoolGroup.add(coreMesh);
 
-  // 4. Studio Contact Ground Shadow Plane
+  const coreLength = 1.1; // Protrudes forward from the jacket
+
+  // A. Central inner fiber core cylinder
+  const centerCoreGeom = new THREE.CylinderGeometry(0.12, 0.12, coreLength, 16);
+  centerCoreGeom.rotateX(Math.PI / 2); // Align along Z axis
+  const centerCoreMesh = new THREE.Mesh(centerCoreGeom, coreMat);
+  centerCoreMesh.position.set(0, 0, coreLength * 0.25);
+  coreGroup.add(centerCoreMesh);
+
+  // B. 8 Individual twisted micro-filament fiber strands forming the core cluster
+  const filamentCount = 8;
+  const filamentRadius = 0.048;
+  for (let f = 0; f < filamentCount; f++) {
+    const baseAngle = (f / filamentCount) * Math.PI * 2;
+    const strandPts = [];
+    const steps = 18;
+    for (let s = 0; s <= steps; s++) {
+      const z = -0.3 + (s / steps) * (coreLength + 0.3);
+      // Twist along length simulating real twisted multifilament core yarn
+      const twistAngle = baseAngle + (s / steps) * Math.PI * 1.5;
+      // Slight splay at the very tip for natural cut fiber look
+      const splay = s > (steps - 3) ? 1.0 + (s - (steps - 3)) * 0.12 : 1.0;
+      const dist = 0.14 * splay;
+      const x = Math.cos(twistAngle) * dist;
+      const y = Math.sin(twistAngle) * dist;
+      strandPts.push(new THREE.Vector3(x, y, z));
+    }
+    const filamentCurve = new THREE.CatmullRomCurve3(strandPts);
+    const filamentGeom = new THREE.TubeGeometry(filamentCurve, 20, filamentRadius, 8, false);
+    const filamentMesh = new THREE.Mesh(filamentGeom, coreMat);
+    filamentMesh.castShadow = true;
+    coreGroup.add(filamentMesh);
+  }
+
+  // Position and orient the core group exactly at the cut tip aligned with the rope tangent!
+  coreGroup.position.copy(tipPos);
+  coreGroup.quaternion.copy(ringQuat);
+  threeSpoolGroup.add(coreGroup);
+
+  // 5. Opposite End Cap (Tidy finished end on left side at t=0)
+  const leftPos = cordCurve.getPointAt(0.0);
+  const leftTangent = cordCurve.getTangentAt(0.0).normalize();
+  const leftCapGeom = new THREE.SphereGeometry(cordRadius, 16, 16);
+  leftCapGeom.scale(1.0, 1.0, 0.3);
+  const leftQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), leftTangent);
+  const leftCap = new THREE.Mesh(leftCapGeom, threeCordMaterial);
+  leftCap.position.copy(leftPos);
+  leftCap.quaternion.copy(leftQuat);
+  threeSpoolGroup.add(leftCap);
+
+  // 6. Subtle Contact Studio Shadow Plane
   const shadowTex = createShadowTexture();
   const shadowMat = new THREE.MeshBasicMaterial({
     map: shadowTex,
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.55,
     depthWrite: false
   });
-  const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(11, 4.5), shadowMat);
+  const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), shadowMat);
   shadowPlane.rotation.x = -Math.PI / 2;
-  shadowPlane.position.y = -1.45;
+  shadowPlane.position.y = -1.4;
   threeSpoolGroup.add(shadowPlane);
 
-  // Dynamic 3/4 Studio angle for dramatic product presentation
-  threeSpoolGroup.rotation.x = 0.18;
-  threeSpoolGroup.rotation.y = -0.32;
-  threeSpoolGroup.rotation.z = 0.04;
-  threeSpoolGroup.position.y = 0.15;
+  // Position group in center
+  threeSpoolGroup.position.set(-0.3, 0.0, 0);
 
   threeScene.add(threeSpoolGroup);
 }
@@ -722,12 +650,15 @@ function render3DColorSwatches() {
 }
 
 /**
- * Change the color of the 3D spool cord material
+ * Change the color of the 3D cord material and cut wall
  */
 function set3DSpoolColor(color) {
   active3DColor = color;
   if (threeCordMaterial) {
     threeCordMaterial.color.setHex(color.threeColor);
+  }
+  if (threeCutWallMaterial) {
+    threeCutWallMaterial.color.setHex(color.threeColor);
   }
 
   // Update active dot in HUD
@@ -744,11 +675,12 @@ function set3DSpoolColor(color) {
 }
 
 /**
- * Setup buttons for 3D controls (Pause, Reset)
+ * Setup buttons for 3D controls (Pause, Reset, Zoom to Core)
  */
 function setup3DControls() {
   const toggleBtn = document.getElementById('btn-spool-toggle-spin');
   const resetBtn = document.getElementById('btn-spool-reset-view');
+  const zoomCoreBtn = document.getElementById('btn-spool-zoom-core');
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
@@ -760,12 +692,40 @@ function setup3DControls() {
     });
   }
 
+  // Button to zoom in directly to the exposed 3D inner core ("El Alma")
+  if (zoomCoreBtn) {
+    let isZoomedToCore = false;
+    zoomCoreBtn.addEventListener('click', () => {
+      isZoomedToCore = !isZoomedToCore;
+      if (isZoomedToCore) {
+        if (threeControls && threeCamera) {
+          threeControls.target.set(3.4, 0.0, 2.4);
+          threeCamera.position.set(4.2, 0.5, 4.3);
+          threeControls.update();
+          showToast('🔍 Vista Macro: Inspección del Alma interna en 3D');
+          zoomCoreBtn.classList.add('active');
+          zoomCoreBtn.title = 'Volver a vista completa';
+        }
+      } else {
+        if (threeControls && threeCamera) {
+          threeControls.target.set(0, 0, 0);
+          threeCamera.position.set(0, 1.8, 8.5);
+          threeControls.update();
+          zoomCoreBtn.classList.remove('active');
+          zoomCoreBtn.title = 'Hacer zoom macro al alma interna en 3D';
+        }
+      }
+    });
+  }
+
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       if (threeControls && threeCamera && threeSpoolGroup) {
         threeControls.reset();
-        threeCamera.position.set(0, 5, 14);
-        threeSpoolGroup.rotation.set(0.28, 0, -0.15);
+        threeControls.target.set(0, 0, 0);
+        threeCamera.position.set(0, 1.8, 8.5);
+        threeSpoolGroup.rotation.set(0, 0, 0);
+        if (zoomCoreBtn) zoomCoreBtn.classList.remove('active');
       }
     });
   }

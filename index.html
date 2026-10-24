@@ -211,22 +211,25 @@
 
         </div>
 
-        <!-- Right: 3D Interactive Three.js Cord Bundle Showcase -->
+        <!-- Right: 3D Interactive Three.js Cord Strand Showcase -->
         <div class="hero-3d-wrapper">
-          <div id="canvas-3d-container" aria-label="Experiencia 3D del cordón de algodón trenzado con alma (madeja de 6.0 mm). Arrastra para rotar en 360 grados."></div>
+          <div id="canvas-3d-container" aria-label="Experiencia 3D del cordón de algodón trenzado con alma (hebra de 6.0 mm). Arrastra para rotar o haz zoom para ver el alma interna."></div>
 
           <!-- Top HUD -->
           <div class="spool-hud-top">
             <div class="spool-badge-interactive">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-              <span>Gira 360° con el mouse o dedo</span>
+              <span>Gira 360° · Haz Zoom para ver el Alma</span>
             </div>
 
             <div class="spool-controls">
+              <button type="button" class="hud-btn" id="btn-spool-zoom-core" title="Hacer zoom macro al alma interna en 3D">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </button>
               <button type="button" class="hud-btn" id="btn-spool-toggle-spin" title="Pausar rotación">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               </button>
-              <button type="button" class="hud-btn" id="btn-spool-reset-view" title="Reiniciar vista inicial">
+              <button type="button" class="hud-btn" id="btn-spool-reset-view" title="Reiniciar vista completa">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               </button>
             </div>
@@ -240,7 +243,7 @@
                 <!-- Populated dynamically -->
               </div>
             </div>
-            <span class="drag-hint-pill">Madeja 6.0 mm · Trenzado con Alma (Eco-Friendly)</span>
+            <span class="drag-hint-pill">Hebra 6.0 mm · Trenzado 16 Husos con Alma Visible</span>
           </div>
         </div>
 
