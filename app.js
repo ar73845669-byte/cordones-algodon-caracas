@@ -1010,6 +1010,22 @@ function initCartDrawer() {
     });
   }
 
+  // Intercept WhatsApp checkout to ensure legal consent is granted
+  if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', (e) => {
+      const termsCheckbox = document.getElementById('cart-terms-checkbox');
+      const wrap = document.querySelector('.cart-legal-consent-wrap');
+      if (termsCheckbox && !termsCheckbox.checked) {
+        e.preventDefault();
+        showToast('⚠️ Debes autorizar los Términos y Condiciones para continuar con tu pedido.');
+        if (wrap) {
+          wrap.classList.add('alert-shake');
+          setTimeout(() => wrap.classList.remove('alert-shake'), 450);
+        }
+      }
+    });
+  }
+
   // Subscribe to Cart State Changes
   appCart.subscribe(renderCartView);
   renderCartView(appCart.items);
@@ -1144,7 +1160,8 @@ function renderCartView(items) {
       msg += `- ${color.name}: ${meters}m ($${itemSubtotal})\n`;
     }
   });
-  msg += `Total a pagar: $${totalUSD.toFixed(2)} USD`;
+  msg += `Total a pagar: $${totalUSD.toFixed(2)} USD\n\n`;
+  msg += `(Precios referenciales a liquidar a Tasa Oficial BCV del día. Acepto los Términos de Compra, Despacho y Políticas de Hilatura Caracas).`;
 
   const phone = '584141622157';
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
@@ -1155,7 +1172,128 @@ function renderCartView(items) {
 }
 
 // ==========================================================================
-// 8. TOAST NOTIFICATION ENGINE
+// 8. LEGAL COMPLIANCE, CONSENT BANNER & MODAL CONTROLLER
+// ==========================================================================
+function initLegalCompliance() {
+  const modal = document.getElementById('legal-modal');
+  const closeBtn = document.getElementById('close-legal-btn');
+  const agreeBtn = document.getElementById('btn-modal-agree');
+  const tabButtons = document.querySelectorAll('.legal-tab-btn');
+  const tabPanels = document.querySelectorAll('.legal-tab-panel');
+  const banner = document.getElementById('legal-consent-banner');
+  const bannerAccept = document.getElementById('btn-banner-accept');
+  const bannerOpenTerms = document.getElementById('btn-banner-open-terms');
+  const cartOpenTerms = document.getElementById('link-open-terms-cart');
+  const footerLinks = document.querySelectorAll('.footer-legal-link');
+  const termsCheckbox = document.getElementById('cart-terms-checkbox');
+
+  // 1. Show Consent Banner if not previously accepted
+  const isAccepted = localStorage.getItem('hilatura_legal_consent');
+  if (!isAccepted && banner) {
+    setTimeout(() => {
+      banner.classList.add('show');
+    }, 1200);
+  }
+
+  // 2. Banner Accept Click
+  if (bannerAccept) {
+    bannerAccept.addEventListener('click', () => {
+      localStorage.setItem('hilatura_legal_consent', 'accepted');
+      if (banner) banner.classList.remove('show');
+      if (termsCheckbox) termsCheckbox.checked = true;
+      showToast('✓ Consentimiento y Términos aceptados');
+    });
+  }
+
+  // 3. Tab Navigation
+  function switchTab(targetTabId) {
+    tabButtons.forEach(btn => {
+      if (btn.dataset.tab === targetTabId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    tabPanels.forEach(panel => {
+      if (panel.id === targetTabId) {
+        panel.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+      }
+    });
+  }
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+    });
+  });
+
+  // 4. Open Modal Function
+  function openLegalModal(tabId = 'tab-terminos') {
+    if (!modal) return;
+    switchTab(tabId);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // 5. Close Modal Function
+  function closeLegalModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // 6. Connect Open Triggers
+  if (bannerOpenTerms) {
+    bannerOpenTerms.addEventListener('click', () => openLegalModal('tab-terminos'));
+  }
+
+  if (cartOpenTerms) {
+    cartOpenTerms.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLegalModal('tab-terminos');
+    });
+  }
+
+  footerLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const tab = link.dataset.openTab || 'tab-terminos';
+      openLegalModal(tab);
+    });
+  });
+
+  // 7. Connect Close Triggers
+  if (closeBtn) closeBtn.addEventListener('click', closeLegalModal);
+  if (agreeBtn) {
+    agreeBtn.addEventListener('click', () => {
+      localStorage.setItem('hilatura_legal_consent', 'accepted');
+      if (banner) banner.classList.remove('show');
+      if (termsCheckbox) termsCheckbox.checked = true;
+      closeLegalModal();
+      showToast('✓ Has aceptado los Términos y Condiciones de Hilatura Caracas');
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeLegalModal();
+    });
+  }
+
+  // Close with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
+      closeLegalModal();
+    }
+  });
+}
+
+// ==========================================================================
+// 9. TOAST NOTIFICATION ENGINE
 // ==========================================================================
 function showToast(text, duration = 3000) {
   let container = document.getElementById('toast-container');
@@ -1186,7 +1324,7 @@ function showToast(text, duration = 3000) {
 }
 
 // ==========================================================================
-// 9. INITIALIZATION ON DOM READY
+// 10. INITIALIZATION ON DOM READY
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize 3D Experience
@@ -1206,7 +1344,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Initialize Slide-Over Cart
   initCartDrawer();
 
-  // 6. Lightbox Close handlers
+  // 6. Initialize Legal Compliance, Consent Banner & Modal
+  initLegalCompliance();
+
+  // 7. Lightbox Close handlers
   const closeLightBtn = document.getElementById('close-lightbox-btn');
   const lightModal = document.getElementById('lightbox-modal');
   if (closeLightBtn) closeLightBtn.addEventListener('click', closeLightbox);
@@ -1224,5 +1365,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  console.log('✓ Hilatura Caracas initialized successfully with 11 colors, 3D spool, and WhatsApp cart integration.');
+  console.log('✓ Hilatura Caracas initialized successfully with legal compliance, 11 colors, 3D spool, and WhatsApp cart integration.');
 });

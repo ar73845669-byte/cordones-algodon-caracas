@@ -421,6 +421,14 @@
         </div>
       </div>
 
+      <!-- Legal Consent & Authorization Checkbox -->
+      <div class="cart-legal-consent-wrap">
+        <label class="legal-checkbox-label" for="cart-terms-checkbox">
+          <input type="checkbox" id="cart-terms-checkbox" checked>
+          <span>Autorizo el tratamiento de mis datos de contacto y acepto los <button type="button" class="btn-text-legal-link" id="link-open-terms-cart">Términos, Condiciones y Precios (Tasa Oficial BCV)</button> de Hilatura Caracas.</span>
+        </label>
+      </div>
+
       <!-- Direct WhatsApp Action Button -->
       <a href="https://wa.me/584141622157" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-order" id="whatsapp-order-btn">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -430,7 +438,7 @@
       </a>
 
       <p class="whatsapp-note">
-        Al hacer clic, se abrirá tu WhatsApp con el mensaje estructurado para confirmar el despacho en Caracas de inmediato.
+        Al hacer clic, se abrirá tu WhatsApp con el mensaje estructurado para confirmar el despacho en Caracas de inmediato bajo nuestra política de compra segura.
       </p>
 
       <button type="button" class="cart-clear-link" id="clear-cart-btn">Vaciar Carrito</button>
@@ -476,6 +484,182 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- ==========================================================================
+       MODAL LEGAL: TÉRMINOS, CONDICIONES, PRIVACIDAD Y TASA BCV
+       ========================================================================== -->
+  <div class="legal-modal-backdrop" id="legal-modal" aria-hidden="true">
+    <div class="legal-modal-container" role="dialog" aria-labelledby="legal-modal-title">
+      
+      <!-- Modal Header -->
+      <div class="legal-modal-header">
+        <div class="legal-header-info">
+          <span class="legal-badge-pill">Marco Legal, Transparencia &amp; Protección al Consumidor</span>
+          <h3 class="legal-modal-title" id="legal-modal-title">Términos, Condiciones y Autorización de Datos</h3>
+        </div>
+        <button type="button" class="btn-close-legal" id="close-legal-btn" aria-label="Cerrar ventana legal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Legal Navigation Tabs -->
+      <div class="legal-modal-tabs" role="tablist" aria-label="Secciones legales">
+        <button type="button" class="legal-tab-btn active" data-tab="tab-terminos">📜 Términos de Compra</button>
+        <button type="button" class="legal-tab-btn" data-tab="tab-privacidad">🔒 Privacidad &amp; Datos</button>
+        <button type="button" class="legal-tab-btn" data-tab="tab-fiscal">⚖️ Régimen Fiscal &amp; Tasa BCV</button>
+        <button type="button" class="legal-tab-btn" data-tab="tab-envios">📦 Envíos &amp; Devoluciones</button>
+      </div>
+
+      <!-- Legal Content Body -->
+      <div class="legal-modal-body">
+        
+        <!-- Panel 1: Términos y Condiciones Generales de Compra -->
+        <div class="legal-tab-panel active" id="tab-terminos">
+          <div class="legal-section-block">
+            <h4>1. Objeto y Alcance del Catálogo Digital</h4>
+            <p>El presente portal web opera como catálogo interactivo, cotizador y vitrina digital de <strong>Hilatura Caracas</strong>, actividad comercial dedicada a la importación, distribución y suministro mayorista y al detal de cordones de algodón trenzado con alma reforzada en la ciudad de Caracas, República Bolivariana de Venezuela.</p>
+            <p>Al interactuar con la plataforma, utilizar la calculadora de metraje, añadir productos al carrito y formalizar su pedido por medio de nuestro canal oficial de WhatsApp, usted declara ser mayor de edad, contar con capacidad legal de contratación y aceptar expresamente sujetarse a las presentes cláusulas de compra y uso.</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>2. Precios Referenciales y Disponibilidad de Inventario</h4>
+            <p>Los precios publicados en esta plataforma corresponden a valores referenciales fijados a razón de <strong>$0.50 USD por metro lineal</strong> para cualquiera de los 11 colores ofrecidos en el catálogo oficial. Las cotizaciones emitidas a través de la calculadora web constituyen un presupuesto informativo previo y están sujetas a la verificación física de disponibilidad de stock en nuestro almacén al momento de la confirmación formal por mensajería.</p>
+            <p>Hilatura Caracas garantiza el respeto íntegro de los precios y metros cotizados durante la vigencia de la cotización formal acordada vía WhatsApp (lapso de 24 a 48 horas).</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>3. Perfeccionamiento de la Compraventa</h4>
+            <p>La selección y adición de metros al carrito virtual no representa una compraventa concluida de forma automática, sino una solicitud formal de presupuesto que se atiende de forma directa y personalizada a través del canal corporativo de WhatsApp (+58 414 162 2157). La transacción se considerará válidamente perfeccionada una vez que ambas partes acuerden el metraje exacto, se determine la tasa oficial del día, se verifique la recepción conforme de los fondos y se expida el respectivo comprobante de entrega o factura.</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>4. Uso y Aplicación de los Cordones Textiles</h4>
+            <p>Nuestros cordones de algodón trenzado con alma interna han sido diseñados y calibrados con altos estándares de calidad textil para su aplicación en calzado casual y deportivo, confección de indumentaria, macramé, bisutería y tapicería ligera. Hilatura Caracas no asume responsabilidad civil ni garantías por usos no convencionales o sometimiento del material a cargas de tracción industrial pesada que excedan las propiedades físicas naturales del algodón y su núcleo textil.</p>
+          </div>
+        </div>
+
+        <!-- Panel 2: Política de Privacidad y Autorización de Datos Personales -->
+        <div class="legal-tab-panel" id="tab-privacidad">
+          <div class="legal-section-block">
+            <h4>1. Consentimiento Expreso para el Tratamiento de Datos</h4>
+            <p>En conformidad con la normativa legal venezolana sobre Mensajes de Datos y Comercio Electrónico y los estándares internacionales de protección de privacidad, al hacer clic en autorizar o enviar mensajes a través de nuestros enlaces de WhatsApp, usted otorga su <strong>consentimiento previo, voluntario, expreso e informado</strong> para que Hilatura Caracas almacene y procese sus datos de contacto (tales como nombre, número telefónico, alias de mensajería y dirección de despacho).</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>2. Finalidad Exclusiva de la Información</h4>
+            <p>La información recopilada será tratada con la más estricta confidencialidad y se destinará exclusivamente a:</p>
+            <ul>
+              <li>Coordinar la preparación, corte por metro y embalaje de los cordones solicitados.</li>
+              <li>Pactar la logística de entrega personal en Caracas o suministrar la guía de despacho de encomienda nacional.</li>
+              <li>Emitir los comprobantes comerciales y fiscales requeridos por la legislación aplicable.</li>
+              <li>Brindar asesoría técnica de metraje y atención postventa personalizada.</li>
+            </ul>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>3. Prohibición Absoluta de Venta o Cesión a Terceros</h4>
+            <p>Hilatura Caracas asume el compromiso inquebrantable de <strong>no comercializar, alquilar, vender ni transferir</strong> sus datos personales a terceras empresas o agencias publicitarias con fines de mercadeo invasivo o spam.</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>4. Uso de Tecnologías Locales (LocalStorage y Cookies Técnicas)</h4>
+            <p>Este catálogo web no implementa cookies de seguimiento invasivo inter-sitios ni perfilamiento de usuarios. Emplea exclusivamente el almacenamiento local seguro de su propio navegador (LocalStorage) para preservar los artículos en su carrito de compras y registrar su aceptación del presente marco de consentimiento para que no tenga que visualizar avisos repetitivos.</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>5. Ejercicio de Derechos de Acceso y Rectificación</h4>
+            <p>Usted puede en cualquier momento solicitar la actualización o eliminación de sus registros de contacto de nuestra libreta comercial escribiendo un mensaje directo a nuestra línea de WhatsApp (+58 414 162 2157).</p>
+          </div>
+        </div>
+
+        <!-- Panel 3: Régimen Fiscal, Tasa Oficial BCV y Medios de Pago -->
+        <div class="legal-tab-panel" id="tab-fiscal">
+          <div class="legal-section-block">
+            <h4>1. Apego Irrestricto a la Tasa Oficial del Banco Central de Venezuela (BCV)</h4>
+            <p>En estricto apego al marco legal de la República Bolivariana de Venezuela, la <strong>Ley del Banco Central de Venezuela</strong>, el Convenio Cambiario N° 1 y las directrices de protección a los derechos económicos de los usuarios:</p>
+            <ul>
+              <li>Todos los precios fijados con referencia en moneda extranjera ($0.50 USD/metro) que sean liquidados en moneda nacional (Bolívares) se calcularán y cancelarán sin excepción alguna a la <strong>Tasa de Cambio Oficial publicada por el Banco Central de Venezuela (BCV)</strong> correspondiente a la fecha valor de la operación.</li>
+              <li>Hilatura Caracas <strong>rechaza categóricamente el uso de cualquier cotización, tasa no oficial o marcador no autorizado</strong>, protegiendo al consumidor contra especulaciones y asegurando plena legalidad en cada transacción comercial.</li>
+            </ul>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>2. Modalidades de Pago Aceptadas</h4>
+            <p>Ponemos a disposición de nuestros clientes canales de pago cómodos, transparentes y verificables:</p>
+            <ul>
+              <li><strong>Bolívares a Tasa Oficial BCV:</strong> Pago Móvil interbancario inmediato y transferencias bancarias nacionales en bancos habilitados.</li>
+              <li><strong>Moneda Extranjera en Efectivo (USD):</strong> Aplicable exclusivamente en entregas presenciales o retiros convenidos en Caracas (billetes en buen estado físico, legibles, sin mutilaciones severas).</li>
+              <li><strong>Transferencias Digitales:</strong> Canales electrónicos internacionales previamente acordados entre las partes.</li>
+            </ul>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>3. Cumplimiento Tributario y Facturación (SENIAT)</h4>
+            <p>Hilatura Caracas opera en apego a los deberes formales establecidos por el <strong>Servicio Nacional Integrado de Administración Aduanera y Tributaria (SENIAT)</strong> y la Ley del Impuesto al Valor Agregado (IVA). Los clientes corporativos, talleres, zapaterías o fabricantes que requieran comprobante formal con crédito fiscal deberán consignar oportunamente su Registro de Información Fiscal (RIF) actualizado para la emisión reglamentaria.</p>
+          </div>
+        </div>
+
+        <!-- Panel 4: Políticas de Envíos, Despachos, Inspección y Devoluciones -->
+        <div class="legal-tab-panel" id="tab-envios">
+          <div class="legal-section-block">
+            <h4>1. Logística de Despachos en el Área Metropolitana de Caracas</h4>
+            <p>Para clientes ubicados en Caracas, se ofrecen dos alternativas convenidas:</p>
+            <ul>
+              <li><strong>Entrega Personal / Pick-up:</strong> Punto céntrico de mutuo acuerdo previamente coordinado sin cargo adicional o con costo mínimo de traslado.</li>
+              <li><strong>Servicio de Mensajería / Delivery Express:</strong> Traslado directo a talleres, locales o domicilios particulares mediante mensajeros motorizados independientes, con tarifa a cargo del comprador cancelable al recibir.</li>
+            </ul>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>2. Despachos Nacionales al Interior de Venezuela</h4>
+            <p>Para compras desde el interior del país, los paquetes se canalizan mediante empresas de encomienda formalmente constituidas (<strong>MRW, Tealca, Zoom o Domesa</strong>) bajo la modalidad de Cobro en Destino (COD) asegurado. La custodia, integridad del fardo durante el tránsito y los plazos de entrega quedan regidos por las políticas de la empresa de transporte una vez entregado el paquete y suministrado el respectivo número de guía o tracking al cliente.</p>
+          </div>
+
+          <div class="legal-section-block">
+            <h4>3. Naturaleza del Material y Política de Devolución por Metraje</h4>
+            <p>Debido a que el cordón de algodón es un <strong>insumo textil cortado a medida exacta y personalizada</strong> por solicitud directa del cliente desde las bobinas maestras de importación:</p>
+            <ul>
+              <li><strong>No se admiten cancelaciones ni devoluciones por cambio subjetivo de decisión</strong> una vez que la bobina ha sido fraccionada y cortada conforme a los metros ordenados.</li>
+              <li><strong>Plazo de Verificación:</strong> El cliente dispone de un lapso de 48 horas continuas tras la entrega para medir y constatar la cantidad y estado exterior del cordón recibido.</li>
+              <li><strong>Garantía por Defectos Manifiestos de Fábrica:</strong> En caso fortuito de constatarse una imperfección originaria en el tejido o rotura del alma interna previo a su uso, Hilatura Caracas procederá a la reposición inmediata del metraje defectuoso o al reintegro proporcional de fondos, siempre y cuando el cordón se conserve intacto y no haya sido sometido a teñido, confección, cortes adicionales o procesos químicos.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="legal-modal-footer">
+        <div class="legal-footer-note">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Operación comercial legal y transparente en Caracas, Venezuela.</span>
+        </div>
+        <button type="button" class="btn-legal-accept" id="btn-modal-agree">He Leído y Acepto los Términos</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       BANNER FLOTANTE DE CONSENTIMIENTO Y AVISO LEGAL
+       ========================================================================== -->
+  <aside class="legal-consent-banner" id="legal-consent-banner" aria-label="Aviso legal y consentimiento de compra">
+    <div class="consent-banner-inner">
+      <div class="consent-banner-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="consent-banner-text">
+        <strong class="consent-banner-headline">Transparencia Legal, Tasa Oficial BCV &amp; Compra Segura</strong>
+        <p class="consent-banner-p">
+          En <em>Hilatura Caracas</em> garantizamos compras transparentes y cumplimos con la normativa de comercio electrónico y protección al consumidor. Precios referenciales a <strong>$0.50/m</strong> liquidables en Bolívares a la <strong>Tasa Oficial del Banco Central de Venezuela (BCV)</strong>. Al navegar o comprar, aceptas nuestros términos de despacho y autorizas el tratamiento de tus datos para procesar tu pedido.
+        </p>
+      </div>
+      <div class="consent-banner-actions">
+        <button type="button" class="btn-consent-terms" id="btn-banner-open-terms">Leer Términos &amp; Normativas</button>
+        <button type="button" class="btn-consent-accept" id="btn-banner-accept">Aceptar y Continuar</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
        FOOTER
        ========================================================================== -->
   <footer class="site-footer">
@@ -485,7 +669,7 @@
       <div>
         <h4 class="footer-brand-title">HILATURA CARACAS</h4>
         <p class="footer-desc">
-          Especialistas en importación directa de cordones de algodón trenzado con alma desde fábricas certificadas en China. Abasteciendo a marcas de calzado, confeccionistas, diseñadores y artesanos en toda Venezuela.
+          Especialistas en importación directa de cordones de algodón trenzado con alma desde fábricas certificadas en China. Abasteciendo a marcas de calzado, confeccionistas, diseñadores y artesanos en toda Venezuela bajo estrictos estándares de transparencia comercial.
         </p>
         <div style="display: flex; gap: 0.6rem; align-items: center; font-size: 0.82rem; color: var(--color-gold);">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -500,7 +684,7 @@
           <li><a href="#hero">Experiencia 3D (Carrete)</a></li>
           <li><a href="#galeria">Galería Polaroid</a></li>
           <li><a href="#catalogo">Catálogo 11 Colores</a></li>
-          <li><a href="#caracas-envios">Envíos & Logística</a></li>
+          <li><a href="#caracas-envios">Envíos &amp; Logística</a></li>
         </ul>
       </div>
 
@@ -515,11 +699,22 @@
         </ul>
       </div>
 
+      <!-- Legal Framework & Compliance -->
+      <div>
+        <h5 class="footer-heading">Marco Legal &amp; Normativa</h5>
+        <ul class="footer-links-list">
+          <li><button type="button" class="footer-legal-link" data-open-tab="tab-terminos">📜 Términos de Compra</button></li>
+          <li><button type="button" class="footer-legal-link" data-open-tab="tab-privacidad">🔒 Privacidad &amp; Tratamiento</button></li>
+          <li><button type="button" class="footer-legal-link" data-open-tab="tab-fiscal">⚖️ Régimen Fiscal &amp; Tasa BCV</button></li>
+          <li><button type="button" class="footer-legal-link" data-open-tab="tab-envios">📦 Envíos &amp; Devoluciones</button></li>
+        </ul>
+      </div>
+
       <!-- Direct Contact & WhatsApp -->
       <div>
         <h5 class="footer-heading">Atención Directa</h5>
         <p class="footer-desc" style="margin-bottom: 0.8rem;">
-          Asesoría técnica para talleres de calzado, presupuestos al mayor y cotizaciones de delivery.
+          Asesoría técnica para talleres de calzado, presupuestos al mayor y cotizaciones de delivery en Caracas.
         </p>
         <a href="https://wa.me/584141622157" target="_blank" rel="noopener noreferrer" style="color: #25D366; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -534,7 +729,7 @@
     <!-- Bottom credits -->
     <div class="footer-bottom-bar">
       <span>© 2026 Hilatura Caracas. Todos los derechos reservados.</span>
-      <span>Paleta inspirada en el Telar tradicional de Jacquard: Lino, Terracota, Madera &amp; Vinotinto.</span>
+      <span>Precios referenciales liquidables en Bolívares conforme a la Tasa Oficial del Banco Central de Venezuela (BCV). Cumplimiento con la normativa legal de comercio electrónico (SENIAT / SUNDDE).</span>
     </div>
   </footer>
 
