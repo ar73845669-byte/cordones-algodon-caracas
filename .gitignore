@@ -1,0 +1,10 @@
+# Archivos y configuraciones del IDE
+extensions/
+argv.json
+.agents/
+index,html
+
+# Archivos temporales y de sistema
+*.log
+.DS_Store
+Thumbs.db

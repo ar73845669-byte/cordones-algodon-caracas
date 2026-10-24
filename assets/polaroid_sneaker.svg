@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="sneakerBg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#F7F2EC" />
+      <stop offset="70%" stop-color="#EBE0D3" />
+      <stop offset="100%" stop-color="#DBCBBA" />
+    </radialGradient>
+
+    <linearGradient id="leatherWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#F4EFEA" />
+      <stop offset="100%" stop-color="#E2D9CF" />
+    </linearGradient>
+
+    <linearGradient id="suedeTerracotta" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D97A5E" />
+      <stop offset="50%" stop-color="#C86D51" />
+      <stop offset="100%" stop-color="#A95239" />
+    </linearGradient>
+
+    <linearGradient id="chunkyLaceBeige" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FAF5EE" />
+      <stop offset="40%" stop-color="#E8DCB8" />
+      <stop offset="70%" stop-color="#D0BC94" />
+      <stop offset="100%" stop-color="#B39B72" />
+    </linearGradient>
+
+    <linearGradient id="soleRubber" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F2EBE1" />
+      <stop offset="80%" stop-color="#E3D7C5" />
+      <stop offset="100%" stop-color="#CCA677" />
+    </linearGradient>
+
+    <filter id="shoeShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#3E2723" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#sneakerBg)" />
+
+  <!-- Background Graphic Elements -->
+  <circle cx="300" cy="280" r="210" fill="none" stroke="#D4A373" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.4" />
+  <circle cx="300" cy="280" r="230" fill="none" stroke="#C86D51" stroke-width="0.8" opacity="0.25" />
+
+  <!-- Ground Contact Shadow -->
+  <ellipse cx="290" cy="465" rx="230" ry="32" fill="#3E2723" opacity="0.22" filter="url(#shoeShadow)" />
+
+  <!-- Sneaker Silhouette Group -->
+  <g transform="translate(45, 110)" filter="url(#shoeShadow)">
+    
+    <!-- Sneaker Outsole Base -->
+    <path d="M 60,310 C 100,320 220,335 340,325 C 410,318 450,290 465,245 C 475,255 450,335 360,345 C 240,355 110,350 45,335 C 35,330 40,310 60,310 Z" 
+          fill="url(#soleRubber)" stroke="#B39B72" stroke-width="2" />
+    
+    <!-- Midsole -->
+    <path d="M 55,305 C 110,315 220,320 330,315 C 410,310 445,280 460,240 C 440,240 400,280 320,290 C 210,295 100,290 55,305 Z" 
+          fill="#FAF8F5" />
+
+    <!-- Suede Mudguard (Terracotta Jacquard) -->
+    <path d="M 50,300 C 70,270 120,270 160,265 C 240,255 350,245 420,225 C 455,215 455,245 440,265 C 380,285 240,290 50,300 Z" 
+          fill="url(#suedeTerracotta)" stroke="#3E2723" stroke-width="1.2" />
+
+    <!-- Upper Body Leather -->
+    <path d="M 75,285 C 90,230 140,190 200,175 C 260,160 320,120 350,90 C 375,95 400,140 420,180 C 435,210 410,230 380,240 C 270,255 130,265 75,285 Z" 
+          fill="url(#leatherWhite)" stroke="#D4A373" stroke-width="1.5" />
+
+    <!-- Sneaker Tongue & Collar -->
+    <path d="M 230,170 C 265,110 290,75 320,60 C 345,65 355,85 350,110 C 330,145 285,185 240,200 Z" 
+          fill="#3E2723" />
+    <path d="M 240,175 C 270,120 295,85 320,75 C 330,80 340,95 335,115 C 315,150 280,185 240,195 Z" 
+          fill="#6B2D5C" opacity="0.8" />
+
+    <!-- Metal Eyelets (Aluminium Brass Grommets) -->
+    <g fill="#D4A373" stroke="#3E2723" stroke-width="1.5">
+      <circle cx="215" cy="188" r="8" /><circle cx="215" cy="188" r="4" fill="#3E2723" />
+      <circle cx="245" cy="165" r="8" /><circle cx="245" cy="165" r="4" fill="#3E2723" />
+      <circle cx="280" cy="142" r="8" /><circle cx="280" cy="142" r="4" fill="#3E2723" />
+      <circle cx="315" cy="120" r="8" /><circle cx="315" cy="120" r="4" fill="#3E2723" />
+      
+      <!-- Right Side Eyelets -->
+      <circle cx="240" cy="210" r="8" /><circle cx="240" cy="210" r="4" fill="#3E2723" />
+      <circle cx="270" cy="190" r="8" /><circle cx="270" cy="190" r="4" fill="#3E2723" />
+      <circle cx="305" cy="168" r="8" /><circle cx="305" cy="168" r="4" fill="#3E2723" />
+      <circle cx="340" cy="145" r="8" /><circle cx="340" cy="145" r="4" fill="#3E2723" />
+    </g>
+
+    <!-- CHUNKY BRAIDED COTTON LACES (Cordones Trenzados con Alma en Calzado) -->
+    <!-- Criss-cross braided cord 1 -->
+    <path d="M 215,188 Q 235,215 270,190" fill="none" stroke="#3E2723" stroke-width="18" stroke-linecap="round" opacity="0.2" />
+    <path d="M 215,188 Q 235,215 270,190" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+    <path d="M 215,188 Q 235,215 270,190" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="4 6" opacity="0.8" />
+
+    <!-- Criss-cross braided cord 2 -->
+    <path d="M 240,210 Q 250,175 245,165" fill="none" stroke="#3E2723" stroke-width="18" stroke-linecap="round" opacity="0.2" />
+    <path d="M 240,210 Q 250,175 245,165" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+    <path d="M 240,210 Q 250,175 245,165" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="4 6" opacity="0.8" />
+
+    <!-- Criss-cross braided cord 3 -->
+    <path d="M 245,165 Q 280,185 305,168" fill="none" stroke="#3E2723" stroke-width="18" stroke-linecap="round" opacity="0.2" />
+    <path d="M 245,165 Q 280,185 305,168" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+    <path d="M 245,165 Q 280,185 305,168" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="4 6" opacity="0.8" />
+
+    <!-- Criss-cross braided cord 4 -->
+    <path d="M 270,190 Q 285,150 280,142" fill="none" stroke="#3E2723" stroke-width="18" stroke-linecap="round" opacity="0.2" />
+    <path d="M 270,190 Q 285,150 280,142" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+    <path d="M 270,190 Q 285,150 280,142" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="4 6" opacity="0.8" />
+
+    <!-- Upper cross cord -->
+    <path d="M 280,142 Q 315,155 340,145" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+    <path d="M 305,168 Q 310,130 315,120" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="15" stroke-linecap="round" />
+
+    <!-- Artisanal Oversized Tie Knot & Hanging Loops -->
+    <!-- Knot Center -->
+    <ellipse cx="328" cy="132" rx="16" ry="12" fill="#B39B72" stroke="#3E2723" stroke-width="1.5" />
+    <ellipse cx="328" cy="132" rx="14" ry="10" fill="url(#chunkyLaceBeige)" />
+
+    <!-- Hanging Loop Left -->
+    <path d="M 325,130 C 310,80 250,70 240,105 C 230,135 285,145 320,135" 
+          fill="none" stroke="#3E2723" stroke-width="16" opacity="0.25" stroke-linecap="round" />
+    <path d="M 325,130 C 310,80 250,70 240,105 C 230,135 285,145 320,135" 
+          fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="14" stroke-linecap="round" />
+    <path d="M 325,130 C 310,80 250,70 240,105 C 230,135 285,145 320,135" 
+          fill="none" stroke="#FFF" stroke-width="2" stroke-dasharray="5 7" opacity="0.8" />
+
+    <!-- Hanging Loop Right -->
+    <path d="M 335,130 C 380,80 430,110 410,150 C 390,180 345,150 330,135" 
+          fill="none" stroke="#3E2723" stroke-width="16" opacity="0.25" stroke-linecap="round" />
+    <path d="M 335,130 C 380,80 430,110 410,150 C 390,180 345,150 330,135" 
+          fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="14" stroke-linecap="round" />
+    <path d="M 335,130 C 380,80 430,110 410,150 C 390,180 345,150 330,135" 
+          fill="none" stroke="#FFF" stroke-width="2" stroke-dasharray="5 7" opacity="0.8" />
+
+    <!-- Hanging End Tails with Brass Aglet Tips -->
+    <!-- Tail 1 -->
+    <path d="M 325,140 C 320,190 350,230 360,280" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="13" stroke-linecap="round" />
+    <!-- Aglet (Puntera Metálica Dorada) -->
+    <rect x="354" y="275" width="12" height="24" rx="3" transform="rotate(12 360 287)" fill="#D4A373" stroke="#3E2723" stroke-width="1" />
+
+    <!-- Tail 2 -->
+    <path d="M 335,140 C 370,180 380,220 395,265" fill="none" stroke="url(#chunkyLaceBeige)" stroke-width="13" stroke-linecap="round" />
+    <rect x="390" y="260" width="12" height="24" rx="3" transform="rotate(18 396 272)" fill="#D4A373" stroke="#3E2723" stroke-width="1" />
+  </g>
+
+  <!-- Caracas Sneaker Culture Tag -->
+  <g transform="translate(40, 485)">
+    <rect width="260" height="75" rx="10" fill="#3E2723" filter="url(#shoeShadow)" />
+    <text x="16" y="26" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="800" fill="#D4A373" letter-spacing="1">CALZADO URBANO CARACAS</text>
+    <text x="16" y="45" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#FAF5EE">Chunky Laces 6mm con Alma</text>
+    <text x="16" y="62" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" fill="#C86D51">No pierde la forma circular al amarrar</text>
+  </g>
+</svg>

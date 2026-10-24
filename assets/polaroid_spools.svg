@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="spoolShelfBg" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#FAF6F0" />
+      <stop offset="70%" stop-color="#EEE3D5" />
+      <stop offset="100%" stop-color="#DDC8B1" />
+    </radialGradient>
+
+    <linearGradient id="shelfWood" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5D4037" />
+      <stop offset="20%" stop-color="#3E2723" />
+      <stop offset="100%" stop-color="#271815" />
+    </linearGradient>
+
+    <!-- 11 Colors Gradients -->
+    <linearGradient id="spoolBeige" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F7F1E5"/><stop offset="50%" stop-color="#E5D7BF"/><stop offset="100%" stop-color="#C2B297"/></linearGradient>
+    <linearGradient id="spoolBlanco" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="50%" stop-color="#ECECEC"/><stop offset="100%" stop-color="#CCCCCC"/></linearGradient>
+    <linearGradient id="spoolRojo" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FF4D4D"/><stop offset="50%" stop-color="#D32F2F"/><stop offset="100%" stop-color="#8E1414"/></linearGradient>
+    <linearGradient id="spoolNegro" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#424242"/><stop offset="50%" stop-color="#212121"/><stop offset="100%" stop-color="#0A0A0A"/></linearGradient>
+    <linearGradient id="spoolGris" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B0BEC5"/><stop offset="50%" stop-color="#78909C"/><stop offset="100%" stop-color="#455A64"/></linearGradient>
+    <linearGradient id="spoolVinotinto" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9C27B0"/><stop offset="50%" stop-color="#6B2D5C"/><stop offset="100%" stop-color="#4A154B"/></linearGradient>
+    <linearGradient id="spoolAzul" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2196F3"/><stop offset="50%" stop-color="#1565C0"/><stop offset="100%" stop-color="#0D47A1"/></linearGradient>
+    <linearGradient id="spoolMorado" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#BA68C8"/><stop offset="50%" stop-color="#7B1FA2"/><stop offset="100%" stop-color="#4A148C"/></linearGradient>
+    <linearGradient id="spoolRosado" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F8BBD0"/><stop offset="50%" stop-color="#E91E63"/><stop offset="100%" stop-color="#AD1457"/></linearGradient>
+    <linearGradient id="spoolMarron" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#795548"/><stop offset="50%" stop-color="#4E342E"/><stop offset="100%" stop-color="#271815"/></linearGradient>
+    <linearGradient id="spoolMarronClaro" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#D7CCC8"/><stop offset="50%" stop-color="#A1887F"/><stop offset="100%" stop-color="#6D4C41"/></linearGradient>
+
+    <filter id="shelfShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#3E2723" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#spoolShelfBg)" />
+
+  <!-- Wooden Workshop Shelves -->
+  <g filter="url(#shelfShadow)">
+    <rect x="20" y="270" width="560" height="26" rx="4" fill="url(#shelfWood)" />
+    <rect x="20" y="510" width="560" height="26" rx="4" fill="url(#shelfWood)" />
+  </g>
+
+  <!-- Spools on Top Shelf (6 Colors) -->
+  <!-- 1. Beige -->
+  <g transform="translate(45, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolBeige)" />
+    <!-- Braided texture lines -->
+    <line x1="6" y1="40" x2="58" y2="40" stroke="#FFF" stroke-dasharray="3 4" stroke-width="1.5" opacity="0.6" />
+    <line x1="6" y1="80" x2="58" y2="80" stroke="#FFF" stroke-dasharray="3 4" stroke-width="1.5" opacity="0.6" />
+    <line x1="6" y1="120" x2="58" y2="120" stroke="#FFF" stroke-dasharray="3 4" stroke-width="1.5" opacity="0.6" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">BEIGE</text>
+  </g>
+
+  <!-- 2. Blanco -->
+  <g transform="translate(135, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolBlanco)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">BLANCO</text>
+  </g>
+
+  <!-- 3. Rojo -->
+  <g transform="translate(225, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolRojo)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">ROJO</text>
+  </g>
+
+  <!-- 4. Negro -->
+  <g transform="translate(315, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolNegro)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">NEGRO</text>
+  </g>
+
+  <!-- 5. Gris -->
+  <g transform="translate(405, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolGris)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">GRIS</text>
+  </g>
+
+  <!-- 6. Vinotinto -->
+  <g transform="translate(495, 120)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolVinotinto)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">VINOTINTO</text>
+  </g>
+
+  <!-- Spools on Bottom Shelf (5 Colors) -->
+  <!-- 7. Azul -->
+  <g transform="translate(85, 360)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolAzul)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">AZUL</text>
+  </g>
+
+  <!-- 8. Morado -->
+  <g transform="translate(180, 360)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolMorado)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">MORADO</text>
+  </g>
+
+  <!-- 9. Rosado -->
+  <g transform="translate(275, 360)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolRosado)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">ROSADO</text>
+  </g>
+
+  <!-- 10. Marrón -->
+  <g transform="translate(370, 360)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolMarron)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#3E2723" text-anchor="middle">MARRÓN</text>
+  </g>
+
+  <!-- 11. Marrón Claro -->
+  <g transform="translate(465, 360)" filter="url(#shelfShadow)">
+    <ellipse cx="32" cy="10" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <rect x="6" y="10" width="52" height="135" fill="url(#spoolMarronClaro)" />
+    <ellipse cx="32" cy="145" rx="32" ry="10" fill="#D4A373" stroke="#3E2723" stroke-width="1.5" />
+    <text x="32" y="162" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#3E2723" text-anchor="middle">M. CLARO</text>
+  </g>
+
+  <!-- Top Title Banner -->
+  <g transform="translate(120, 25)">
+    <rect width="360" height="50" rx="25" fill="#3E2723" filter="url(#shelfShadow)" />
+    <text x="180" y="31" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" fill="#D4A373" letter-spacing="2" text-anchor="middle">11 COLORES EN STOCK INMEDIATO</text>
+  </g>
+</svg>

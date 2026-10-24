@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="tailorBg" cx="40%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#F9F5EF" />
+      <stop offset="70%" stop-color="#ECE2D4" />
+      <stop offset="100%" stop-color="#DBCAB5" />
+    </radialGradient>
+
+    <linearGradient id="hoodieFabric" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#552249" />
+      <stop offset="60%" stop-color="#6B2D5C" />
+      <stop offset="100%" stop-color="#3D1534" />
+    </linearGradient>
+
+    <linearGradient id="goldShears" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FFF0CC" />
+      <stop offset="40%" stop-color="#D4A373" />
+      <stop offset="70%" stop-color="#B8860B" />
+      <stop offset="100%" stop-color="#8C6218" />
+    </linearGradient>
+
+    <linearGradient id="whiteCordGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#EDE6DE" />
+      <stop offset="100%" stop-color="#D5C7B7" />
+    </linearGradient>
+
+    <filter id="tailorShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#3E2723" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#tailorBg)" />
+
+  <!-- Measuring Tape Background Coil (Centímetro de Costura) -->
+  <g opacity="0.35" stroke="#D4A373" stroke-width="1.5">
+    <circle cx="150" cy="180" r="110" fill="none" stroke-dasharray="2 6" />
+    <circle cx="150" cy="180" r="125" fill="none" stroke-dasharray="1 10" />
+  </g>
+
+  <!-- Garment Fabric Section (Hoodie Hood / Neckline in Soft Wine Jacquard) -->
+  <g transform="translate(60, 140)" filter="url(#tailorShadow)">
+    <!-- Hood Collar Curve -->
+    <path d="M 0,220 C 60,110 180,60 320,60 C 440,60 480,120 500,200 C 470,260 380,310 240,310 C 110,310 30,260 0,220 Z" 
+          fill="url(#hoodieFabric)" stroke="#3E2723" stroke-width="2" />
+    
+    <!-- Ribbed Hem Tunnel for Drawstring (Pretina de Cordón) -->
+    <path d="M 40,210 C 100,140 180,110 300,110 C 400,110 440,150 460,200" 
+          fill="none" stroke="#501E44" stroke-width="36" stroke-linecap="round" />
+    
+    <!-- Stitching lines along drawstring tunnel -->
+    <path d="M 40,195 C 100,125 180,95 300,95 C 400,95 440,135 460,185" 
+          fill="none" stroke="#D4A373" stroke-width="2" stroke-dasharray="5 5" opacity="0.8" />
+    <path d="M 40,225 C 100,155 180,125 300,125 C 400,125 440,165 460,215" 
+          fill="none" stroke="#D4A373" stroke-width="2" stroke-dasharray="5 5" opacity="0.8" />
+
+    <!-- Metal Eyelet Grommets in Fabric -->
+    <!-- Grommet Left -->
+    <circle cx="180" cy="155" r="12" fill="#D4A373" stroke="#2B1B17" stroke-width="2" />
+    <circle cx="180" cy="155" r="7" fill="#2B1B17" />
+    <!-- Grommet Right -->
+    <circle cx="340" cy="155" r="12" fill="#D4A373" stroke="#2B1B17" stroke-width="2" />
+    <circle cx="340" cy="155" r="7" fill="#2B1B17" />
+
+    <!-- WHITE BRAIDED COTTON CORD EMERGING FROM HOODIE -->
+    <!-- Left Cord Hanging -->
+    <path d="M 180,155 C 175,200 160,260 140,340 C 130,380 145,410 160,430" 
+          fill="none" stroke="#2B1B17" stroke-width="17" opacity="0.2" stroke-linecap="round" />
+    <path d="M 180,155 C 175,200 160,260 140,340 C 130,380 145,410 160,430" 
+          fill="none" stroke="url(#whiteCordGrad)" stroke-width="14" stroke-linecap="round" />
+    <!-- Texture marks on white cord -->
+    <path d="M 180,155 C 175,200 160,260 140,340 C 130,380 145,410 160,430" 
+          fill="none" stroke="#C4B7A6" stroke-width="2" stroke-dasharray="4 6" opacity="0.7" />
+
+    <!-- Aglet on Left Cord -->
+    <rect x="153" y="420" width="12" height="26" rx="4" transform="rotate(-15 160 430)" fill="url(#goldShears)" stroke="#3E2723" stroke-width="1.2" />
+
+    <!-- Right Cord Hanging with subtle loop -->
+    <path d="M 340,155 C 345,210 370,250 350,320 C 335,370 300,380 295,420" 
+          fill="none" stroke="#2B1B17" stroke-width="17" opacity="0.2" stroke-linecap="round" />
+    <path d="M 340,155 C 345,210 370,250 350,320 C 335,370 300,380 295,420" 
+          fill="none" stroke="url(#whiteCordGrad)" stroke-width="14" stroke-linecap="round" />
+    <path d="M 340,155 C 345,210 370,250 350,320 C 335,370 300,380 295,420" 
+          fill="none" stroke="#C4B7A6" stroke-width="2" stroke-dasharray="4 6" opacity="0.7" />
+
+    <rect x="290" y="415" width="12" height="26" rx="4" transform="rotate(8 295 420)" fill="url(#goldShears)" stroke="#3E2723" stroke-width="1.2" />
+  </g>
+
+  <!-- Golden Tailor's Shears (Tijeras de Sastre Artesanal) -->
+  <g transform="translate(380, 50) rotate(42)" filter="url(#tailorShadow)">
+    <!-- Blade 1 -->
+    <path d="M 0,0 L 220,12 L 0,24 Z" fill="url(#goldShears)" stroke="#3E2723" stroke-width="2" />
+    <!-- Pivot screw -->
+    <circle cx="45" cy="12" r="7" fill="#3E2723" />
+    <circle cx="45" cy="12" r="4" fill="#FFE082" />
+    <!-- Handle 1 loop -->
+    <ellipse cx="-45" cy="5" rx="35" ry="22" fill="none" stroke="url(#goldShears)" stroke-width="10" />
+    
+    <!-- Blade 2 crossing -->
+    <path d="M 0,10 L 210,0 L 0,3 Z" fill="url(#goldShears)" stroke="#3E2723" stroke-width="1.8" opacity="0.9" />
+    <!-- Handle 2 loop -->
+    <ellipse cx="-45" cy="35" rx="45" ry="24" fill="none" stroke="url(#goldShears)" stroke-width="10" />
+  </g>
+
+  <!-- Caracas Confection Studio Label -->
+  <g transform="translate(35, 490)">
+    <rect width="250" height="75" rx="10" fill="#3E2723" filter="url(#tailorShadow)" />
+    <text x="16" y="26" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="800" fill="#D4A373" letter-spacing="1">CONFECCIÓN &amp; TALLERES</text>
+    <text x="16" y="46" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#F9F5EF">Capuchas, Joggers &amp; Bolsos</text>
+    <text x="16" y="63" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" fill="#FAF5EE" opacity="0.8">Tacto 100% algodón que no irrita la piel</text>
+  </g>
+</svg>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Cordones de Algodón Trenzado con Alma | Calidad de Importación en Caracas</title>
+  <meta name="description" content="Venta de cordones de algodón trenzado con alma importados de China en Caracas. Ideales para calzado, confección, macramé y bisutería. 11 colores en stock a $0.50 el metro. Pedidos directos por WhatsApp.">
+  <meta name="keywords" content="cordones de algodón, cordones con alma, cordones para calzado caracas, cordones macrame caracas, cordón trenzado venezuela, insumos textiles caracas">
+  <meta name="author" content="Hilatura Caracas">
+  
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cordones de Algodón Trenzado con Alma | Calidad de Importación en Caracas">
+  <meta property="og:description" content="11 colores disponibles a $0.50/m. Firmeza en el núcleo y máxima suavidad para calzado, confección y artesanías. Envíos en toda Caracas.">
+  <meta property="og:image" content="assets/polaroid_macro.svg">
+  <meta name="theme-color" content="#3E2723">
+
+  <!-- Google Fonts: Plus Jakarta Sans, Fraunces (Jacquard Loom style), Caveat (Polaroid handwritten style) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Three.js & OrbitControls for 3D Interactive Spool -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "Cordón de Algodón Trenzado con Alma",
+    "image": "assets/polaroid_macro.svg",
+    "description": "Cordón de algodón puro trenzado con núcleo reforzado (con alma), importado de China. Disponible en 11 colores para calzado, confección, macramé y bisutería en Caracas.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Hilatura Caracas"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://hilaturacaracas.com",
+      "priceCurrency": "USD",
+      "price": "0.50",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Hilatura Caracas"
+      }
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & NAVIGATION BAR
+       ========================================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="brand-wrapper" id="brand-logo-link" aria-label="Hilatura Caracas - Inicio">
+        <div class="brand-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="brand-text-box">
+          <span class="brand-name">HILATURA CARACAS</span>
+          <span class="brand-tagline">Cordones de Algodón con Alma</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="header-nav" aria-label="Navegación principal">
+        <a href="#hero" class="nav-link">Experiencia 3D</a>
+        <a href="#galeria" class="nav-link">Galería Polaroid</a>
+        <a href="#catalogo" class="nav-link">Catálogo (11 Colores)</a>
+        <a href="#caracas-envios" class="nav-link">Envíos Caracas</a>
+      </nav>
+
+      <!-- Header Action Items: Live Price Indicator & Floating Cart Button -->
+      <div class="header-actions">
+        <div class="price-pill-indicator" title="Precio estándar para todos los colores">
+          <span>Precio:</span>
+          <span class="price-highlight">$0.50 / m</span>
+        </div>
+
+        <button type="button" class="cart-trigger-btn" id="header-cart-btn" aria-label="Ver carrito de compras">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span>Carrito</span>
+          <span class="cart-badge-count" id="cart-badge-count">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Floating Mobile Cart Trigger -->
+  <button type="button" class="floating-mobile-cart" id="mobile-cart-btn" aria-label="Abrir carrito móvil">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    <span>Ver Carrito</span>
+    <span class="cart-badge-count" id="mobile-cart-badge-count">0</span>
+  </button>
+
+  <main>
+    <!-- ==========================================================================
+         SCROLL 1: EXPERIENCIA 3D INTERACTIVA & HERO SECTION
+         ========================================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-grid">
+        
+        <!-- Left: Copy & Quick Calculator -->
+        <div class="hero-content">
+          <div class="caracas-badge">
+            <span class="pulse-dot"></span>
+            <span>Importación Directa China · Almacén Caracas</span>
+          </div>
+
+          <h1 class="hero-title">
+            Cordones de Algodón Trenzado con Alma | <span class="hero-title-accent">Calidad de Importación en Caracas</span>
+          </h1>
+
+          <p class="hero-description">
+            Estructurados con un <strong>núcleo interior reforzado (alma)</strong> que garantiza un cuerpo cilíndrico perfecto sin deformaciones, recubierto por una trama de <strong>100% algodón suave de tacto prémium</strong>. La elección predilecta para fabricantes y creadores en Caracas.
+          </p>
+
+          <!-- Caracas Application Pills -->
+          <div class="application-tags">
+            <span class="app-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Calzado & Sneakers
+            </span>
+            <span class="app-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Confección & Hoodies
+            </span>
+            <span class="app-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Macramé & Manualidades
+            </span>
+            <span class="app-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Bisutería Artesanal
+            </span>
+          </div>
+
+          <!-- Quick Calculator Card -->
+          <div class="hero-calc-card">
+            <div class="calc-header">
+              <div class="calc-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-terracotta);"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                <span>Calculadora Rápida por Metro</span>
+              </div>
+              <span class="calc-rate-badge">$0.50 USD / m</span>
+            </div>
+
+            <div class="calc-controls-row">
+              <!-- Color Selector -->
+              <div class="calc-input-group">
+                <label for="hero-calc-color">Selecciona Color</label>
+                <select id="hero-calc-color" class="calc-select" aria-label="Seleccionar color de cordón">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+
+              <!-- Meters Input -->
+              <div class="calc-input-group">
+                <label for="hero-calc-meters">Metros Deseados</label>
+                <div class="meters-spinner-wrapper">
+                  <button type="button" class="spinner-btn" id="hero-calc-minus" aria-label="Restar 5 metros">-</button>
+                  <input type="number" id="hero-calc-meters" value="20" min="1" step="1">
+                  <button type="button" class="spinner-btn" id="hero-calc-plus" aria-label="Sumar 5 metros">+</button>
+                </div>
+                <div class="calc-quick-pills">
+                  <button type="button" class="quick-pill hero-quick-pill" data-meters="10">+10m</button>
+                  <button type="button" class="quick-pill hero-quick-pill" data-meters="25">+25m</button>
+                  <button type="button" class="quick-pill hero-quick-pill" data-meters="50">+50m</button>
+                  <button type="button" class="quick-pill hero-quick-pill" data-meters="100">+100m</button>
+                </div>
+              </div>
+
+              <!-- Live Total Calculation -->
+              <div class="calc-total-box">
+                <span class="calc-total-label">Total a Pagar</span>
+                <span class="calc-total-amount" id="hero-calc-total">$10.00 USD</span>
+              </div>
+            </div>
+
+            <!-- Add to Cart CTA -->
+            <button type="button" class="calc-btn-add" id="hero-calc-add-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+              <span>Añadir al Carrito</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right: 3D Interactive Three.js Spool Showcase -->
+        <div class="hero-3d-wrapper">
+          <div id="canvas-3d-container" aria-label="Experiencia 3D del carrete de cordón de algodón. Arrastra para rotar en 360 grados."></div>
+
+          <!-- Top HUD -->
+          <div class="spool-hud-top">
+            <div class="spool-badge-interactive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Gira 360° con el mouse o dedo</span>
+            </div>
+
+            <div class="spool-controls">
+              <button type="button" class="hud-btn" id="btn-spool-toggle-spin" title="Pausar rotación">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+              <button type="button" class="hud-btn" id="btn-spool-reset-view" title="Reiniciar vista inicial">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom HUD: Real-time 3D Color Swapper Bar -->
+          <div class="spool-hud-bottom">
+            <div class="color-swapper-bar">
+              <span class="swapper-label">Color 3D:</span>
+              <div id="spool-swatches-container" style="display: flex; gap: 6px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+            <span class="drag-hint-pill">Bobina de Madera Maciza · Trama de 16 Husos</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCROLL 2: GALLERY COLLAGE (ESTILO FOTOGRAFÍA POLAROID)
+         ========================================================================== -->
+    <section class="polaroid-gallery-section" id="galeria">
+      <div class="section-header-centered">
+        <span class="section-eyebrow">Skill 2 · Muestrario Analógico</span>
+        <h2 class="section-heading">Fotografías del Telar: Aplicaciones Reales</h2>
+        <p class="section-subtext">
+          Explora la textura microscópica del trenzado de algodón con alma, su resistencia mecánica y su comportamiento en calzado de alta gama, prendas urbanas y piezas decorativas caraqueñas.
+        </p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="gallery-filters" role="tablist" aria-label="Filtrar galería polaroid">
+        <button type="button" class="gallery-filter-btn filter-btn active" data-category="all">Todas las Muestras</button>
+        <button type="button" class="gallery-filter-btn filter-btn" data-category="calzado">Calzado & Sneakers</button>
+        <button type="button" class="gallery-filter-btn filter-btn" data-category="macrame">Macramé & Decoración</button>
+        <button type="button" class="gallery-filter-btn filter-btn" data-category="confeccion">Confección Textil</button>
+        <button type="button" class="gallery-filter-btn filter-btn" data-category="bisuteria">Bisutería & Accesorios</button>
+      </div>
+
+      <!-- Organic Polaroid Collage Board -->
+      <div class="polaroid-collage-board" id="polaroid-board">
+        <!-- Rendered dynamically via app.js -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCROLL 3: CATÁLOGO INTERACTIVO DE PRODUCTOS (11 COLORES)
+         ========================================================================== -->
+    <section class="catalog-section" id="catalogo">
+      <div class="section-header-centered">
+        <span class="section-eyebrow">Catálogo Completo · $0.50 USD / metro</span>
+        <h2 class="section-heading">Colección de Cordones en 11 Colores</h2>
+        <p class="section-subtext">
+          Selecciona la cantidad de metros que necesitas para cada color. Cada unidad cuenta con alma interna anti-colapso, calibre uniforme de 5-6 mm y acabado suave 100% algodón.
+        </p>
+      </div>
+
+      <!-- Toolbar: Categories and Search -->
+      <div class="catalog-toolbar">
+        <div class="catalog-categories">
+          <button type="button" class="cat-filter-btn active" data-cat="all">Todos los Tonos (11)</button>
+          <button type="button" class="cat-filter-btn" data-cat="neutros">Neutros & Clásicos</button>
+          <button type="button" class="cat-filter-btn" data-cat="calidos">Tonos Telar & Cálidos</button>
+          <button type="button" class="cat-filter-btn" data-cat="vivos">Tonos Vivos</button>
+        </div>
+
+        <div class="catalog-search-wrapper">
+          <svg class="catalog-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="catalog-search-input" placeholder="Buscar color o uso (ej: sneakers, vinotinto)..." aria-label="Buscar en el catálogo">
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- 11 cards rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         LOGÍSTICA & CONFIANZA EN CARACAS
+         ========================================================================== -->
+    <section class="caracas-perks-section" id="caracas-envios">
+      <div class="perks-container">
+        <div class="perks-grid">
+          
+          <div class="perk-card">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <h3 class="perk-title">Delivery Express en Caracas</h3>
+            <p class="perk-desc">
+              Despacho motorizado directo el mismo día en Chacao, Baruta, Las Mercedes, El Hatillo, Sabana Grande y Libertador. Punto de pick-up seguro sin costo adicional.
+            </p>
+          </div>
+
+          <div class="perk-card">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="perk-title">Con Alma Anti-Deformación</h3>
+            <p class="perk-desc">
+              A diferencia de los cordones huecos baratos que se aplastan al primer nudo, nuestro núcleo de alta tenacidad mantiene el volumen cilíndrico bajo cualquier tensión.
+            </p>
+          </div>
+
+          <div class="perk-card">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3 class="perk-title">Métodos de Pago Locales</h3>
+            <p class="perk-desc">
+              Aceptamos Pago Móvil (a tasa oficial BCV del día), Efectivo en Divisas USD contra-entrega, Zelle, Zinli y Binance Pay USDT sin comisiones ocultas.
+            </p>
+          </div>
+
+          <div class="perk-card">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <h3 class="perk-title">Envíos a Nivel Nacional</h3>
+            <p class="perk-desc">
+              Si estás en el interior del país, enviamos tu bobina o corte de cordones por MRW, Zoom, Tealca o Domesa con embalaje impermeable reforzado.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       SLIDE-OVER CART PANEL (CARRITO FLOTANTE LATERAL)
+       Cumpliendo el requisito exacto: Se despliega desde el borde derecho
+       sin interrumpir ni ocultar la navegación del catálogo en escritorio.
+       ========================================================================== -->
+  <div class="cart-backdrop" id="cart-backdrop"></div>
+
+  <aside class="cart-slideover-panel" id="cart-slideover-panel" aria-label="Carrito de compras" aria-hidden="true">
+    
+    <!-- Cart Header -->
+    <div class="cart-panel-header">
+      <div class="cart-panel-title-group">
+        <h3 class="cart-panel-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span>Tu Pedido</span>
+        </h3>
+        <span class="cart-panel-subtitle">Despacho desde Caracas, Venezuela</span>
+      </div>
+
+      <button type="button" class="btn-close-cart" id="close-cart-btn" aria-label="Cerrar panel de carrito">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Items List -->
+    <div class="cart-items-list" id="cart-items-container">
+      <!-- Generated in app.js -->
+    </div>
+
+    <!-- Empty State View -->
+    <div class="cart-empty-state" id="cart-empty-view">
+      <div class="empty-icon-wrap">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      <h4 class="empty-title">Tu carrito está vacío</h4>
+      <p class="empty-text">Elige los metros que deseas desde la calculadora del inicio o en la lista de los 11 colores del catálogo.</p>
+    </div>
+
+    <!-- Cart Footer & Direct WhatsApp Integration -->
+    <div class="cart-panel-footer" id="cart-footer-controls">
+      <div class="cart-summary-breakdown">
+        <div class="summary-line">
+          <span>Metros Totales:</span>
+          <strong id="cart-summary-meters">0 m</strong>
+        </div>
+        <div class="summary-line">
+          <span>Subtotal ($0.50 / m):</span>
+          <span id="cart-summary-subtotal">$0.00 USD</span>
+        </div>
+        <div class="summary-line">
+          <span>Entrega en Caracas:</span>
+          <span>A convenir / Pick-up</span>
+        </div>
+        <div class="summary-line total-line">
+          <span>Total a Pagar:</span>
+          <span class="total-usd-highlight" id="cart-summary-total">$0.00 USD</span>
+        </div>
+      </div>
+
+      <!-- Direct WhatsApp Action Button -->
+      <a href="https://wa.me/584141622157" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-order" id="whatsapp-order-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.074-1.02-.054-.337-.11-.775-.25-1.378-.511-1.636-.708-2.696-2.378-2.777-2.486-.082-.108-.667-.887-.667-1.691 0-.804.422-1.2.573-1.362.15-.162.326-.203.435-.203.11 0 .218 0 .313.006.1.006.234-.038.366.279.136.327.463 1.13.504 1.212.041.082.068.177.014.285-.055.109-.082.177-.163.272-.082.095-.172.212-.245.285-.082.082-.168.17-.073.334.095.163.424.699.91 1.13.627.556 1.156.728 1.32.81.163.082.259.068.354-.041.095-.109.408-.476.517-.639.109-.163.218-.136.367-.082.15.054.953.449 1.116.531.163.082.272.122.313.19.041.068.041.394-.103.799z"/>
+        </svg>
+        <span>Finalizar Pedido por WhatsApp</span>
+      </a>
+
+      <p class="whatsapp-note">
+        Al hacer clic, se abrirá tu WhatsApp con el mensaje estructurado para confirmar el despacho en Caracas de inmediato.
+      </p>
+
+      <button type="button" class="cart-clear-link" id="clear-cart-btn">Vaciar Carrito</button>
+    </div>
+
+  </aside>
+
+  <!-- ==========================================================================
+       LIGHTBOX MODAL FOR POLAROID PHOTOS
+       ========================================================================== -->
+  <div class="lightbox-modal" id="lightbox-modal" aria-hidden="true">
+    <div class="lightbox-container">
+      <button type="button" class="btn-close-lightbox" id="close-lightbox-btn" aria-label="Cerrar vista detallada">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="lightbox-img-wrap">
+        <img src="" alt="" id="lightbox-img">
+      </div>
+
+      <div class="lightbox-info">
+        <div>
+          <span class="polaroid-meta-subtitle" id="lightbox-subtitle">SUBTÍTULO</span>
+          <h3 class="polaroid-handwritten-title" id="lightbox-title" style="font-size: 2.2rem; margin: 0.5rem 0;">TÍTULO</h3>
+          <p class="section-subtext" id="lightbox-desc">Descripción...</p>
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: var(--color-brown-medium);">
+            <div><strong>• Núcleo:</strong> Alma interna de multifilamento de poliéster de alta tenacidad.</div>
+            <div><strong>• Exterior:</strong> 100% Algodón peinado de tacto suave y textura mate.</div>
+            <div><strong>• Calibre estándar:</strong> 5 a 6 mm de diámetro circular constante.</div>
+            <div><strong>• Precio:</strong> $0.50 USD por metro (11 colores disponibles).</div>
+          </div>
+        </div>
+
+        <button type="button" class="calc-btn-add" id="lightbox-order-btn" style="margin-top: 1.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span>Ir al Catálogo a Pedir Metros</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- Brand & Mission -->
+      <div>
+        <h4 class="footer-brand-title">HILATURA CARACAS</h4>
+        <p class="footer-desc">
+          Especialistas en importación directa de cordones de algodón trenzado con alma desde fábricas certificadas en China. Abasteciendo a marcas de calzado, confeccionistas, diseñadores y artesanos en toda Venezuela.
+        </p>
+        <div style="display: flex; gap: 0.6rem; align-items: center; font-size: 0.82rem; color: var(--color-gold);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Caracas, Venezuela · Despachos diarios</span>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h5 class="footer-heading">Navegación</h5>
+        <ul class="footer-links-list">
+          <li><a href="#hero">Experiencia 3D (Carrete)</a></li>
+          <li><a href="#galeria">Galería Polaroid</a></li>
+          <li><a href="#catalogo">Catálogo 11 Colores</a></li>
+          <li><a href="#caracas-envios">Envíos & Logística</a></li>
+        </ul>
+      </div>
+
+      <!-- Colors Index -->
+      <div>
+        <h5 class="footer-heading">Gama de 11 Colores</h5>
+        <ul class="footer-links-list" style="font-size: 0.8rem;">
+          <li>Beige · Blanco · Negro · Gris</li>
+          <li>Vinotinto · Rojo · Azul · Morado</li>
+          <li>Rosado · Marrón · Marrón Claro</li>
+          <li><strong style="color: var(--color-gold);">$0.50 USD / metro</strong></li>
+        </ul>
+      </div>
+
+      <!-- Direct Contact & WhatsApp -->
+      <div>
+        <h5 class="footer-heading">Atención Directa</h5>
+        <p class="footer-desc" style="margin-bottom: 0.8rem;">
+          Asesoría técnica para talleres de calzado, presupuestos al mayor y cotizaciones de delivery.
+        </p>
+        <a href="https://wa.me/584141622157" target="_blank" rel="noopener noreferrer" style="color: #25D366; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.074-1.02-.054-.337-.11-.775-.25-1.378-.511-1.636-.708-2.696-2.378-2.777-2.486-.082-.108-.667-.887-.667-1.691 0-.804.422-1.2.573-1.362.15-.162.326-.203.435-.203.11 0 .218 0 .313.006.1.006.234-.038.366.279.136.327.463 1.13.504 1.212.041.082.068.177.014.285-.055.109-.082.177-.163.272-.082.095-.172.212-.245.285-.082.082-.168.17-.073.334.095.163.424.699.91 1.13.627.556 1.156.728 1.32.81.163.082.259.068.354-.041.095-.109.408-.476.517-.639.109-.163.218-.136.367-.082.15.054.953.449 1.116.531.163.082.272.122.313.19.041.068.041.394-.103.799z"/>
+          </svg>
+          <span>WhatsApp: +58 414 162 2157</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom credits -->
+    <div class="footer-bottom-bar">
+      <span>© 2026 Hilatura Caracas. Todos los derechos reservados.</span>
+      <span>Paleta inspirada en el Telar tradicional de Jacquard: Lino, Terracota, Madera &amp; Vinotinto.</span>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+</body>
+</html>
