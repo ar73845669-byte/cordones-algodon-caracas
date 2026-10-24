@@ -15,6 +15,94 @@ const BASE_PRICE_PER_METER = 0.50; // $0.50 USD per meter
 
 const CORD_COLORS = [
   {
+    id: 'negro',
+    name: 'Negro Azabache',
+    tone: 'Profundo / Formal',
+    hex: '#1A1A1A',
+    category: 'neutros',
+    description: 'El esencial universal. Elegancia absoluta y máxima resistencia al uso diario en calzado formal, casual y prendas deportivas de alto rango.',
+    uses: ['Calzado Formal', 'Joggers', 'Urbano'],
+    image: 'assets/rope_negro_naranja_vinotinto.jpg',
+    threeColor: 0x1A1A1A
+  },
+  {
+    id: 'naranja',
+    name: 'Naranja Intenso',
+    tone: 'Vibrante / Energético',
+    hex: '#E8650A',
+    category: 'vivos',
+    description: 'Color de alto impacto visual para prendas deportivas, calzado de trail running, bisutería juvenil y accesorios streetwear.',
+    uses: ['Calzado Deportivo', 'Streetwear', 'Bisutería'],
+    image: 'assets/rope_negro_naranja_vinotinto.jpg',
+    threeColor: 0xE8650A
+  },
+  {
+    id: 'vinotinto',
+    name: 'Vinotinto Jacquard',
+    tone: 'Borgoña / Elegante',
+    hex: '#7B1D35',
+    category: 'calidos',
+    description: 'Color estrella de la paleta Jacquard. Sofisticado, prémium y rico, armoniza a la perfección con cuero, calzado artesanal y bisutería.',
+    uses: ['Calzado Cuero', 'Bisutería', 'Marroquinería'],
+    image: 'assets/rope_negro_naranja_vinotinto.jpg',
+    threeColor: 0x7B1D35
+  },
+  {
+    id: 'gris',
+    name: 'Gris Perla',
+    tone: 'Urbano / Neutro',
+    hex: '#9E9E9E',
+    category: 'neutros',
+    description: 'Tono neutro moderno y equilibrado. Ideal para joggers técnicos, capuchas minimalistas y calzado contemporáneo de moda urbana.',
+    uses: ['Joggers', 'Confección', 'Calzado'],
+    image: 'assets/rope_gris_plomo.jpg',
+    threeColor: 0x9E9E9E
+  },
+  {
+    id: 'gris_plomo',
+    name: 'Gris Plomo',
+    tone: 'Oscuro / Industrial',
+    hex: '#616161',
+    category: 'neutros',
+    description: 'Tono gris oscuro de acabado industrial y urbano. Perfecto para calzado técnico, prendas outerwear y accesorios masculinos.',
+    uses: ['Calzado Técnico', 'Outerwear', 'Masculino'],
+    image: 'assets/rope_gris_plomo.jpg',
+    threeColor: 0x616161
+  },
+  {
+    id: 'amarillo',
+    name: 'Amarillo Solar',
+    tone: 'Luminoso / Alegre',
+    hex: '#F5C800',
+    category: 'vivos',
+    description: 'Máxima luminosidad y alegría. Esencial para calzado infantil, accesorios de verano, bisutería artesanal y prendas llamativas.',
+    uses: ['Infantil', 'Verano', 'Accesorios'],
+    image: 'assets/rope_amarillo_futsea_verde.jpg',
+    threeColor: 0xF5C800
+  },
+  {
+    id: 'futsea',
+    name: 'Fucsia Neón',
+    tone: 'Impactante / Moderno',
+    hex: '#E91E8C',
+    category: 'vivos',
+    description: 'Color tendencia de alta moda. Perfecto para calzado femenino, accesorios artísticos, bisutería de diseñador y prendas Y2K.',
+    uses: ['Moda Femenina', 'Bisutería Autor', 'Y2K'],
+    image: 'assets/rope_amarillo_futsea_verde.jpg',
+    threeColor: 0xE91E8C
+  },
+  {
+    id: 'verde',
+    name: 'Verde Bosque',
+    tone: 'Natural / Orgánico',
+    hex: '#2E7D32',
+    category: 'vivos',
+    description: 'Conexión con la naturaleza. Ideal para calzado outdoor, tapices de macramé boho, bisutería artesanal y prendas eco-fashion.',
+    uses: ['Outdoor', 'Macramé', 'Eco-Fashion'],
+    image: 'assets/rope_amarillo_futsea_verde.jpg',
+    threeColor: 0x2E7D32
+  },
+  {
     id: 'beige',
     name: 'Beige Natural',
     tone: 'Crudo / Lino',
@@ -22,107 +110,30 @@ const CORD_COLORS = [
     category: 'neutros',
     description: 'El favorito clásico para macramé, alpargatas y moda bohemia. Tono lino puro que combina con cualquier textura orgánica.',
     uses: ['Macramé', 'Alpargatas', 'Prendas Lino'],
+    image: 'assets/rope_beige_marron_marronoscuro.jpg',
     threeColor: 0xE6DAC8
   },
   {
-    id: 'blanco',
-    name: 'Blanco Nieve',
-    tone: 'Puro / Impecable',
-    hex: '#FAF9F6',
-    category: 'neutros',
-    description: 'Impecable y de alta luminosidad. El estándar indispensable para sneakers deportivos, calzado urbano y confección de capuchas.',
-    uses: ['Sneakers', 'Calzado', 'Hoodies'],
-    threeColor: 0xFAF9F6
-  },
-  {
-    id: 'rojo',
-    name: 'Rojo Carmesí',
-    tone: 'Vibrante / Fuego',
-    hex: '#C82323',
-    category: 'vivos',
-    description: 'Fuerza visual y contraste audaz. Excelente para calzado deportivo de alto impacto, llaveros náuticos y detalles llamativos.',
-    uses: ['Calzado Deportivo', 'Bisutería', 'Acentos'],
-    threeColor: 0xC82323
-  },
-  {
-    id: 'negro',
-    name: 'Negro Azabache',
-    tone: 'Profundo / Formal',
-    hex: '#1E1E1E',
-    category: 'neutros',
-    description: 'El esencial universal. Elegancia absoluta y máxima resistencia al uso diario en calzado formal, casual y prendas deportivas.',
-    uses: ['Calzado Formal', 'Joggers', 'Urbano'],
-    threeColor: 0x222222
-  },
-  {
-    id: 'gris',
-    name: 'Gris Perla',
-    tone: 'Urbano / Neutro',
-    hex: '#8D9096',
-    category: 'neutros',
-    description: 'Tono neutro moderno y equilibrado. Ideal para joggers técnicos, capuchas minimalistas y calzado contemporáneo.',
-    uses: ['Joggers', 'Confección', 'Calzado'],
-    threeColor: 0x8D9096
-  },
-  {
-    id: 'vinotinto',
-    name: 'Vinotinto Jacquard',
-    tone: 'Borgoña / Elegante',
-    hex: '#6B2D5C',
-    category: 'calidos',
-    description: 'Color estrella de la paleta Jacquard. Sofisticado, prémium y rico, armoniza a la perfección con cuero, calzado artesanal y bisutería.',
-    uses: ['Calzado Cuero', 'Bisutería', 'Marroquinería'],
-    threeColor: 0x6B2D5C
-  },
-  {
-    id: 'azul',
-    name: 'Azul Índigo',
-    tone: 'Marino / Clásico',
-    hex: '#1D3557',
-    category: 'vivos',
-    description: 'Atemporal y distinguido. Inspirado en el denim y el estilo náutico, excelente para calzado casual y accesorios masculinos.',
-    uses: ['Calzado Casual', 'Bolsos', 'Náutico'],
-    threeColor: 0x1D3557
-  },
-  {
-    id: 'morado',
-    name: 'Morado Amatista',
-    tone: 'Místico / Creativo',
-    hex: '#5E2D79',
-    category: 'vivos',
-    description: 'Distintivo, audaz y original. Muy buscado para creaciones de bisutería de autor, marroquinería de diseño y detalles juveniles.',
-    uses: ['Bisutería Autor', 'Accesorios', 'Diseño'],
-    threeColor: 0x5E2D79
-  },
-  {
-    id: 'rosado',
-    name: 'Rosado Pastel',
-    tone: 'Palo de Rosa',
-    hex: '#D98897',
-    category: 'vivos',
-    description: 'Suave, delicado y en tendencia. Ideal para moda femenina, detalles de lencería, cordería infantil y manualidades chic.',
-    uses: ['Moda Femenina', 'Infantil', 'Manualidades'],
-    threeColor: 0xD98897
-  },
-  {
     id: 'marron',
-    name: 'Marrón Chocolate',
-    tone: 'Moka / Rústico',
-    hex: '#4E342E',
-    category: 'calidos',
-    description: 'Cálido, terroso y noble. Perfecto para calzado de aventura, botas de cuero, marroquinería y tapices de telar rústico.',
-    uses: ['Botas', 'Cuero', 'Telar Rústico'],
-    threeColor: 0x4E342E
-  },
-  {
-    id: 'marron_claro',
-    name: 'Marrón Claro',
-    tone: 'Caramelo / Suela',
+    name: 'Marrón Caramelo',
+    tone: 'Cálido / Natural',
     hex: '#A07855',
     category: 'calidos',
     description: 'Tono orgánico por excelencia. Imita el color de las suelas de yute y cuero natural, ideal para espadrilles y accesorios boho.',
     uses: ['Espadrilles', 'Yute', 'Accesorios Boho'],
+    image: 'assets/rope_beige_marron_marronoscuro.jpg',
     threeColor: 0xA07855
+  },
+  {
+    id: 'marron_oscuro',
+    name: 'Marrón Chocolate',
+    tone: 'Moka / Rústico',
+    hex: '#3E2010',
+    category: 'calidos',
+    description: 'Cálido, terroso y noble. Perfecto para calzado de aventura, botas de cuero, marroquinería y tapices de telar rústico artesanal.',
+    uses: ['Botas', 'Cuero', 'Telar Rústico'],
+    image: 'assets/rope_beige_marron_marronoscuro.jpg',
+    threeColor: 0x3E2010
   }
 ];
 
@@ -131,55 +142,55 @@ const GALLERY_ITEMS = [
   {
     id: 'polaroid-1',
     category: 'calzado',
-    title: 'Macro Trenza 6mm',
-    subtitle: 'NÚCLEO INTERNO & ALMA REFORZADA',
-    desc: 'Corte transversal revelando la estructura de 16 husos de algodón con alma interior de alta tenacidad que previene deformaciones.',
-    image: 'assets/polaroid_macro.svg',
-    tag: 'ANATOMÍA TÉCNICA'
+    title: 'Negro, Naranja & Vinotinto',
+    subtitle: 'COLORES OSCUROS DE ALTO IMPACTO',
+    desc: 'Tres de nuestros colores más solicitados en Caracas: Negro Azabache para calzado formal, Naranja Intenso para deportivos y Vinotinto Jacquard para marroquinería premium.',
+    image: 'assets/rope_negro_naranja_vinotinto.jpg',
+    tag: 'COLECCIÓN PREMIUM'
   },
   {
     id: 'polaroid-2',
     category: 'calzado',
-    title: 'Sneakers Urbanos',
-    subtitle: 'CHUNKY LACES EN CARACAS',
-    desc: 'Estilo streetwear caraqueño: cordones gruesos de algodón trenzado en tono Marrón Claro y Beige con terminales metálicos.',
-    image: 'assets/polaroid_sneaker.svg',
-    tag: 'CALZADO URBANO'
+    title: 'Gris Perla & Gris Plomo',
+    subtitle: 'GRISES URBANOS EN 2 TONOS',
+    desc: 'La dupla perfecta de neutros modernos. Gris Perla para streetwear y Gris Plomo industrial para calzado técnico y outerwear masculino de alta gama.',
+    image: 'assets/rope_gris_plomo.jpg',
+    tag: 'TONOS URBANOS'
   },
   {
     id: 'polaroid-3',
     category: 'macrame',
-    title: 'Tapiz Macramé Boho',
-    subtitle: 'NUDOS PRECISOS Y FIRMES',
-    desc: 'El alma interna evita que los nudos cuelguen vencidos, proporcionando volumen escultural a tapices, cestas y porta-macetas.',
-    image: 'assets/polaroid_macrame.svg',
-    tag: 'DECORACIÓN & BOHO'
+    title: 'Amarillo, Fucsia & Verde',
+    subtitle: 'VIVOS & TENDENCIA',
+    desc: 'Nuestra paleta más vibrante: Amarillo Solar para prendas de verano, Fucsia Neón para moda femenina y Verde Bosque para eco-fashion y macramé boho.',
+    image: 'assets/rope_amarillo_futsea_verde.jpg',
+    tag: 'COLORES TENDENCIA'
   },
   {
     id: 'polaroid-4',
     category: 'confeccion',
-    title: 'Taller de Confección',
-    subtitle: 'CAPUCHAS & JOGGERS DE ALTA GAMA',
-    desc: 'Aplicación en pretinas de capuchas y pantalones deportivos. El algodón puro no irrita la piel y resiste incontables lavadas.',
-    image: 'assets/polaroid_confeccion.svg',
-    tag: 'CONFECCIÓN TEXTIL'
+    title: 'Beige, Marrón & Chocolate',
+    subtitle: 'PALETA NATURAL & TIERRA',
+    desc: 'Los tonos cálidos y orgánicos de nuestra colección: Beige Natural para macramé, Marrón Caramelo para espadrilles y Chocolate oscuro para botas y marroquinería.',
+    image: 'assets/rope_beige_marron_marronoscuro.jpg',
+    tag: 'TONOS TIERRA'
   },
   {
     id: 'polaroid-5',
     category: 'confeccion',
-    title: 'Carretes en Telar',
-    subtitle: 'PALETA DE 11 TONOS DISPONIBLES',
-    desc: 'Bobinas de 100 metros en exposición listas para despacho inmediato en toda el área metropolitana de Caracas.',
-    image: 'assets/polaroid_spools.svg',
+    title: 'Colección Completa: 11 Colores',
+    subtitle: 'STOCK INMEDIATO EN CARACAS',
+    desc: 'Los 11 colores de la colección Hilatura Caracas disponibles en stock para despacho inmediato. Pedidos al mayor con descuentos especiales para fabricantes.',
+    image: 'assets/rope_negro_naranja_vinotinto.jpg',
     tag: 'STOCK INMEDIATO'
   },
   {
     id: 'polaroid-6',
     category: 'bisuteria',
-    title: 'Bisutería Marina',
-    subtitle: 'PULSERAS NÁUTICAS CON BROCHES',
-    desc: 'Creaciones de autor trenzadas a mano con broches de latón dorado. El cordón mantiene su sección cilíndrica y suavidad.',
-    image: 'assets/polaroid_bisuteria.svg',
+    title: 'Tonos Cálidos para Artesanía',
+    subtitle: 'BEIGE & MARRÓN PARA BISUTERÍA',
+    desc: 'Nuestros tonos tierra son los preferidos por artesanos y bisuteros caraqueños. El cordón mantiene su sección cilíndrica perfecta en cada nudo y entrelazado.',
+    image: 'assets/rope_beige_marron_marronoscuro.jpg',
     tag: 'ACCESORIOS DE AUTOR'
   }
 ];
@@ -768,6 +779,9 @@ function renderProductCatalog(filterCategory = 'all', searchQuery = '') {
 
     card.innerHTML = `
       <div>
+        <div class="product-card-media" style="width: 100%; height: 160px; border-radius: 10px; overflow: hidden; margin-bottom: 0.9rem; background: #f0f0f0;">
+          <img src="${color.image}" alt="Cordón ${color.name}" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;">
+        </div>
         <div class="product-card-top">
           <div class="product-swatch-box" style="background-color: ${color.hex};" title="Tono ${color.name}"></div>
           <div class="product-info-head">
