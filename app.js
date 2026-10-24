@@ -289,7 +289,7 @@ function initThreeExperience() {
 
   // Camera
   threeCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
-  threeCamera.position.set(0, 5, 14);
+  threeCamera.position.set(0, 2.5, 12);
 
   // Renderer
   threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -305,8 +305,8 @@ function initThreeExperience() {
     threeControls.enableDamping = true;
     threeControls.dampingFactor = 0.05;
     threeControls.enableZoom = true;
-    threeControls.minDistance = 8;
-    threeControls.maxDistance = 22;
+    threeControls.minDistance = 6;
+    threeControls.maxDistance = 18;
     threeControls.maxPolarAngle = Math.PI / 2 + 0.3; // Prevent flipping under ground
   }
 
@@ -366,7 +366,116 @@ function initThreeExperience() {
 }
 
 /**
- * Generate a procedural procedural cotton braid bump map on a canvas
+ * Generate a procedural paper label texture based on the real imported packaging in Caracas
+ * Matches the white paper sleeve from the reference photograph with "ECO-FRIENDLY BRAIDED ROPE 6.0"
+ */
+function createPaperLabelTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  // 1. Off-white textured paper background
+  ctx.fillStyle = '#FAF8F5';
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // Subtle paper grain/speckles
+  ctx.fillStyle = 'rgba(62, 39, 35, 0.025)';
+  for (let i = 0; i < 3000; i++) {
+    const rx = Math.random() * 1024;
+    const ry = Math.random() * 512;
+    ctx.fillRect(rx, ry, 1.5, 1.5);
+  }
+
+  // 2. Decorative border lines along top and bottom edges
+  ctx.strokeStyle = '#2B1B17';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(8, 8, 1008, 496);
+
+  ctx.strokeStyle = 'rgba(200, 109, 81, 0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(14, 14, 996, 484);
+
+  // Helper to draw the label artwork on a given horizontal center (front & back)
+  function drawLabelSection(centerX) {
+    ctx.save();
+    ctx.translate(centerX, 256);
+
+    // Circular Logo Emblem (interlaced braid loop from photo)
+    ctx.strokeStyle = '#2B1B17';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.arc(0, -125, 42, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(0, -125, 37, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // S-curve braid inside logo
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#C86D51';
+    ctx.beginPath();
+    ctx.arc(-8, -132, 14, -Math.PI * 0.2, Math.PI * 0.9);
+    ctx.arc(8, -118, 14, Math.PI * 0.8, -Math.PI * 0.3, true);
+    ctx.stroke();
+
+    // Text: ECO-FRIENDLY
+    ctx.fillStyle = '#2B1B17';
+    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '5px';
+    ctx.fillText('ECO-FRIENDLY', 0, -52);
+
+    // Main Title: BRAIDED ROPE 6.0
+    ctx.font = '800 46px "Plus Jakarta Sans", sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('BRAIDED ROPE 6.0', 0, 0);
+
+    // Thin separator line
+    ctx.strokeStyle = '#C86D51';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-160, 20);
+    ctx.lineTo(160, 20);
+    ctx.stroke();
+
+    // Subtitle: 100% Cotton with Inner Core
+    ctx.fillStyle = '#5D4037';
+    ctx.font = '600 18px "Plus Jakarta Sans", sans-serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('CORDÓN DE ALGODÓN CON ALMA', 0, 50);
+
+    // Badge / Brand
+    ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = '#2B1B17';
+    ctx.fillText('HILATURA CARACAS · CALIDAD DE IMPORTACIÓN', 0, 95);
+
+    // Technical mini-spec box
+    ctx.strokeStyle = 'rgba(62, 39, 35, 0.25)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-120, 120, 240, 42);
+    ctx.font = '600 13px monospace';
+    ctx.fillStyle = '#5D4037';
+    ctx.fillText('CAL: 6.0mm · NÚCLEO ALTA TENACIDAD', 0, 146);
+
+    ctx.restore();
+  }
+
+  // Draw front side (centered at U=0.25 -> X=256)
+  drawLabelSection(256);
+  // Draw back side (centered at U=0.75 -> X=768)
+  drawLabelSection(768);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
+
+/**
+ * Procedural diamond-braid cotton texture (16-carrier weave)
  */
 function createBraidedTextureMap() {
   const canvas = document.createElement('canvas');
@@ -374,203 +483,216 @@ function createBraidedTextureMap() {
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
-  // Base background
   ctx.fillStyle = '#808080';
   ctx.fillRect(0, 0, 512, 512);
 
-  // Draw criss-cross braided ridges to simulate diamond braid pattern
-  ctx.lineWidth = 14;
-  const step = 32;
-
+  const step = 28;
   for (let x = -512; x < 1024; x += step) {
-    // Diagonal 1
-    ctx.strokeStyle = '#D0D0D0';
+    ctx.strokeStyle = '#E8E8E8';
+    ctx.lineWidth = 12;
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x + 512, 512);
     ctx.stroke();
 
-    // Subtle dark ridge shadow
-    ctx.strokeStyle = '#404040';
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#282828';
+    ctx.lineWidth = 3.5;
     ctx.beginPath();
-    ctx.moveTo(x + 8, 0);
-    ctx.lineTo(x + 520, 512);
+    ctx.moveTo(x + 6, 0);
+    ctx.lineTo(x + 518, 512);
     ctx.stroke();
-
-    ctx.lineWidth = 14;
   }
 
   for (let x = -512; x < 1024; x += step) {
-    // Diagonal 2
     ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 12;
     ctx.beginPath();
     ctx.moveTo(x + 512, 0);
     ctx.lineTo(x, 512);
     ctx.stroke();
 
-    // Dark edge
-    ctx.strokeStyle = '#303030';
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#202020';
+    ctx.lineWidth = 3.5;
     ctx.beginPath();
-    ctx.moveTo(x + 520, 0);
-    ctx.lineTo(x + 8, 512);
+    ctx.moveTo(x + 518, 0);
+    ctx.lineTo(x + 6, 512);
     ctx.stroke();
-
-    ctx.lineWidth = 14;
   }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(12, 10);
+  texture.repeat.set(18, 4);
   return texture;
 }
 
 /**
- * Assemble the Spool mesh hierarchy
+ * Generate soft contact shadow texture under the bundle
+ */
+function createShadowTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+
+  const gradient = ctx.createRadialGradient(128, 128, 10, 128, 128, 120);
+  gradient.addColorStop(0, 'rgba(43, 27, 23, 0.45)');
+  gradient.addColorStop(0.5, 'rgba(43, 27, 23, 0.18)');
+  gradient.addColorStop(1, 'rgba(43, 27, 23, 0)');
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 256, 256);
+
+  return new THREE.CanvasTexture(canvas);
+}
+
+/**
+ * Assemble the realistic Braided Cord Hank / Bundle (Based on the actual product photo)
  */
 function createSpoolMesh() {
   threeSpoolGroup = new THREE.Group();
 
-  // Spool Wood Material
-  const woodMaterial = new THREE.MeshStandardMaterial({
-    color: 0x4E342E,
-    roughness: 0.6,
-    metalness: 0.1
-  });
-
-  // Brass / Metal Axle Material
-  const metalMaterial = new THREE.MeshStandardMaterial({
-    color: 0xD4A373,
-    roughness: 0.35,
-    metalness: 0.75
-  });
-
-  // Braided Cord Wound Layer Material
+  // Braided Cotton Material
   const bumpTex = createBraidedTextureMap();
   threeCordMaterial = new THREE.MeshStandardMaterial({
     color: active3DColor.threeColor,
-    roughness: 0.85,
-    metalness: 0.05,
+    roughness: 0.88,
+    metalness: 0.02,
     bumpMap: bumpTex,
-    bumpScale: 0.06
+    bumpScale: 0.075
   });
 
-  // 1. Spool Central Wooden Core Cylinder
-  const innerCylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.6, 1.6, 5.2, 32),
-    woodMaterial
-  );
-  innerCylinder.castShadow = true;
-  threeSpoolGroup.add(innerCylinder);
+  // 1. Generate Organic Hank Looped Strands (36 interlaced loops)
+  const strandCount = 36;
+  const cordRadius = 0.165; // Proportional 6.0 mm scale
 
-  // 2. Wound Braided Cord Layer (Thick cylinder around core)
-  const cordRoll = new THREE.Mesh(
-    new THREE.CylinderGeometry(3.3, 3.3, 4.8, 48),
-    threeCordMaterial
-  );
-  cordRoll.castShadow = true;
-  cordRoll.receiveShadow = true;
-  threeSpoolGroup.add(cordRoll);
+  for (let i = 0; i < strandCount; i++) {
+    // 3 radial layers: inner core, middle body, outer surface
+    let layerRadiusY, layerRadiusZ;
+    if (i < 8) {
+      // Inner core filler
+      layerRadiusY = 0.35 + (i % 3) * 0.12;
+      layerRadiusZ = 0.25 + (i % 2) * 0.14;
+    } else if (i < 22) {
+      // Middle ring
+      layerRadiusY = 0.65 + ((i * 7) % 5) * 0.06;
+      layerRadiusZ = 0.50 + ((i * 3) % 4) * 0.06;
+    } else {
+      // Outer visible strands
+      layerRadiusY = 0.95 + ((i * 11) % 4) * 0.07;
+      layerRadiusZ = 0.72 + ((i * 5) % 4) * 0.07;
+    }
 
-  // Additional ribbed rings to simulate wound cord rows
-  const ringCount = 14;
-  for (let i = 0; i < ringCount; i++) {
-    const yPos = -2.2 + (i * (4.4 / (ringCount - 1)));
-    const cordTorus = new THREE.Mesh(
-      new THREE.TorusGeometry(3.32, 0.18, 12, 36),
-      threeCordMaterial
-    );
-    cordTorus.rotation.x = Math.PI / 2;
-    cordTorus.position.y = yPos;
-    threeSpoolGroup.add(cordTorus);
+    const angle = (i / strandCount) * Math.PI * 2 + (i * 0.25);
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+
+    const yEnd = layerRadiusY * cosA;
+    const zEnd = layerRadiusZ * sinA;
+
+    // Natural length jitter on ends so loops stagger realistically like real cloth
+    const leftLen = 3.9 + Math.sin(i * 1.8) * 0.35;
+    const rightLen = 3.9 + Math.cos(i * 2.1) * 0.35;
+
+    // Center compression factor (waist pinched by white paper band)
+    const pinchY = 0.76;
+    const pinchZ = 0.68;
+
+    // 8 points forming a continuous smooth looped curve
+    const pts = [
+      new THREE.Vector3(-leftLen, yEnd * 1.15, zEnd * 1.15),
+      new THREE.Vector3(-2.2, yEnd * 1.02, zEnd * 1.02),
+      new THREE.Vector3(0, yEnd * pinchY, zEnd * pinchZ),
+      new THREE.Vector3(2.2, yEnd * 1.02, zEnd * 1.02),
+      new THREE.Vector3(rightLen, -yEnd * 1.15, -zEnd * 1.15),
+      new THREE.Vector3(2.2, -yEnd * 1.02, -zEnd * 1.02),
+      new THREE.Vector3(0, -yEnd * pinchY, -zEnd * pinchZ),
+      new THREE.Vector3(-2.2, -yEnd * 1.02, -zEnd * 1.02)
+    ];
+
+    const curve = new THREE.CatmullRomCurve3(pts, true);
+    const tubeGeom = new THREE.TubeGeometry(curve, 52, cordRadius, 9, true);
+    const tubeMesh = new THREE.Mesh(tubeGeom, threeCordMaterial);
+    tubeMesh.castShadow = true;
+    tubeMesh.receiveShadow = true;
+    threeSpoolGroup.add(tubeMesh);
   }
 
-  // 3. Top Flange Disk (Wood)
-  const topFlange = new THREE.Mesh(
-    new THREE.CylinderGeometry(4.2, 4.2, 0.45, 36),
-    woodMaterial
-  );
-  topFlange.position.y = 2.6;
-  topFlange.castShadow = true;
-  threeSpoolGroup.add(topFlange);
+  // 2. White Paper Label Sleeve in the Center ("ECO-FRIENDLY BRAIDED ROPE 6.0")
+  const labelTex = createPaperLabelTexture();
+  const labelMaterial = new THREE.MeshStandardMaterial({
+    map: labelTex,
+    roughness: 0.72,
+    metalness: 0.02,
+    side: THREE.DoubleSide
+  });
 
-  // Top Flange Bevel Rim
-  const topRim = new THREE.Mesh(
-    new THREE.TorusGeometry(4.2, 0.22, 16, 40),
-    woodMaterial
-  );
-  topRim.rotation.x = Math.PI / 2;
-  topRim.position.y = 2.6;
-  threeSpoolGroup.add(topRim);
+  // Oval sleeve wrapped around center waist
+  const labelGeom = new THREE.CylinderGeometry(1.08, 1.08, 2.25, 48, 1, true);
+  labelGeom.rotateZ(Math.PI / 2); // Orient horizontally along X
+  const labelMesh = new THREE.Mesh(labelGeom, labelMaterial);
+  labelMesh.scale.set(1.0, 0.88, 0.75); // Elliptical wrap hugging the rope bundle
+  labelMesh.castShadow = true;
+  labelMesh.receiveShadow = true;
+  threeSpoolGroup.add(labelMesh);
 
-  // 4. Bottom Flange Disk (Wood)
-  const bottomFlange = new THREE.Mesh(
-    new THREE.CylinderGeometry(4.2, 4.2, 0.45, 36),
-    woodMaterial
-  );
-  bottomFlange.position.y = -2.6;
-  bottomFlange.castShadow = true;
-  threeSpoolGroup.add(bottomFlange);
+  // Subtle paper edge trim rings at label borders to give physical paper thickness
+  const paperTrimMat = new THREE.MeshStandardMaterial({ color: 0xE6E0D4, roughness: 0.8 });
+  const trimGeom1 = new THREE.TorusGeometry(1.08, 0.02, 8, 36);
+  trimGeom1.rotateY(Math.PI / 2);
+  const trim1 = new THREE.Mesh(trimGeom1, paperTrimMat);
+  trim1.scale.set(0.75, 0.88, 1.0);
+  trim1.position.x = -1.12;
+  threeSpoolGroup.add(trim1);
 
-  const bottomRim = new THREE.Mesh(
-    new THREE.TorusGeometry(4.2, 0.22, 16, 40),
-    woodMaterial
-  );
-  bottomRim.rotation.x = Math.PI / 2;
-  bottomRim.position.y = -2.6;
-  threeSpoolGroup.add(bottomRim);
+  const trim2 = trim1.clone();
+  trim2.position.x = 1.12;
+  threeSpoolGroup.add(trim2);
 
-  // 5. Central Brass Axle Hole & Pin
-  const brassAxle = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.65, 0.65, 6.2, 32),
-    metalMaterial
-  );
-  threeSpoolGroup.add(brassAxle);
+  // 3. Loose Sample Strand Unfurling with Visible White Core ("Con Alma")
+  const samplePts = [
+    new THREE.Vector3(0.6, 0.15, 0.65),
+    new THREE.Vector3(1.6, -0.25, 1.1),
+    new THREE.Vector3(2.5, -0.9, 1.6),
+    new THREE.Vector3(3.3, -1.6, 2.0)
+  ];
+  const sampleCurve = new THREE.CatmullRomCurve3(samplePts, false);
+  const sampleGeom = new THREE.TubeGeometry(sampleCurve, 32, cordRadius, 10, false);
+  const sampleMesh = new THREE.Mesh(sampleGeom, threeCordMaterial);
+  sampleMesh.castShadow = true;
+  threeSpoolGroup.add(sampleMesh);
 
-  const axleRimTop = new THREE.Mesh(
-    new THREE.TorusGeometry(0.75, 0.15, 12, 24),
-    metalMaterial
-  );
-  axleRimTop.rotation.x = Math.PI / 2;
-  axleRimTop.position.y = 2.85;
-  threeSpoolGroup.add(axleRimTop);
+  // Exposed White Inner Core ("Alma de poliéster multifilamento")
+  const coreMat = new THREE.MeshStandardMaterial({
+    color: 0xFAFAFA,
+    roughness: 0.45,
+    metalness: 0.05
+  });
+  const coreGeom = new THREE.CylinderGeometry(0.08, 0.08, 0.45, 16);
+  const coreMesh = new THREE.Mesh(coreGeom, coreMat);
+  coreMesh.position.set(3.48, -1.78, 2.18);
+  coreMesh.rotation.x = 0.6;
+  coreMesh.rotation.z = -0.55;
+  threeSpoolGroup.add(coreMesh);
 
-  const axleRimBottom = new THREE.Mesh(
-    new THREE.TorusGeometry(0.75, 0.15, 12, 24),
-    metalMaterial
-  );
-  axleRimBottom.rotation.x = Math.PI / 2;
-  axleRimBottom.position.y = -2.85;
-  threeSpoolGroup.add(axleRimBottom);
+  // 4. Studio Contact Ground Shadow Plane
+  const shadowTex = createShadowTexture();
+  const shadowMat = new THREE.MeshBasicMaterial({
+    map: shadowTex,
+    transparent: true,
+    opacity: 0.7,
+    depthWrite: false
+  });
+  const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(11, 4.5), shadowMat);
+  shadowPlane.rotation.x = -Math.PI / 2;
+  shadowPlane.position.y = -1.45;
+  threeSpoolGroup.add(shadowPlane);
 
-  // 6. Tangible Hanging / Unspooling Braided Cord Strand
-  const curve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(3.3, 0.5, 0),
-    new THREE.Vector3(3.8, -0.4, 1.2),
-    new THREE.Vector3(4.2, -1.8, 1.8),
-    new THREE.Vector3(3.6, -3.2, 2.4),
-    new THREE.Vector3(2.4, -4.2, 3.1)
-  ]);
-  const tubeGeometry = new THREE.TubeGeometry(curve, 32, 0.22, 12, false);
-  const hangingCord = new THREE.Mesh(tubeGeometry, threeCordMaterial);
-  hangingCord.castShadow = true;
-  threeSpoolGroup.add(hangingCord);
-
-  // Aglet / Brass Tip on dangling cord
-  const tipMesh = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.24, 0.24, 0.8, 16),
-    metalMaterial
-  );
-  tipMesh.position.set(2.4, -4.2, 3.1);
-  tipMesh.rotation.z = -Math.PI / 4;
-  threeSpoolGroup.add(tipMesh);
-
-  // Tilt spool gently to look more dramatic & tactile
-  threeSpoolGroup.rotation.x = 0.28;
-  threeSpoolGroup.rotation.z = -0.15;
-  threeSpoolGroup.position.y = 0.2;
+  // Dynamic 3/4 Studio angle for dramatic product presentation
+  threeSpoolGroup.rotation.x = 0.18;
+  threeSpoolGroup.rotation.y = -0.32;
+  threeSpoolGroup.rotation.z = 0.04;
+  threeSpoolGroup.position.y = 0.15;
 
   threeScene.add(threeSpoolGroup);
 }
