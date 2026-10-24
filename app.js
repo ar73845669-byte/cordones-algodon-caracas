@@ -275,7 +275,12 @@ const appCart = new CartState();
 let threeScene, threeCamera, threeRenderer, threeSpoolGroup, threeCordMaterial, threeCutWallMaterial;
 let threeControls;
 let isAutoRotating = true;
-let active3DColor = CORD_COLORS[0]; // Beige by default
+let active3DColor = CORD_COLORS.find(c => c.id === 'beige') || CORD_COLORS[0]; // Beige Natural crudo by default
+let targetCamPos = new THREE.Vector3(0, 3.2, 7.8);
+let targetLookAt = new THREE.Vector3(0, 0.4, 0.5);
+let isCameraTransitioning = false;
+let isZoomedToCore = false;
+let agletMeshRef = null;
 
 function initThreeExperience() {
   const container = document.getElementById('canvas-3d-container');
@@ -287,11 +292,11 @@ function initThreeExperience() {
   // Scene
   threeScene = new THREE.Scene();
 
-  // Camera - positioned to view the elegant 3D strand and cut tip
+  // Camera - angled studio view capturing the coiled reel and arched strand
   threeCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
-  threeCamera.position.set(0, 1.8, 8.5);
+  threeCamera.position.set(0, 3.2, 7.8);
 
-  // Renderer
+  // Renderer with soft shadow maps and high pixel density
   threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   threeRenderer.setSize(width, height);
   threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -299,37 +304,38 @@ function initThreeExperience() {
   threeRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
   container.appendChild(threeRenderer.domElement);
 
-  // OrbitControls - minDistance of 0.8 enables extreme close-up macro zoom into the inner core!
+  // OrbitControls - minDistance of 0.5 allows extreme macro zoom into the inner core & fibers
   if (typeof THREE.OrbitControls !== 'undefined') {
     threeControls = new THREE.OrbitControls(threeCamera, threeRenderer.domElement);
     threeControls.enableDamping = true;
     threeControls.dampingFactor = 0.05;
     threeControls.enableZoom = true;
-    threeControls.minDistance = 0.8;
+    threeControls.minDistance = 0.5;
     threeControls.maxDistance = 16;
-    threeControls.maxPolarAngle = Math.PI / 2 + 0.3; // Prevent flipping under ground
+    threeControls.maxPolarAngle = Math.PI / 2 + 0.25;
+    threeControls.target.set(0, 0.4, 0.5);
   }
 
-  // Lighting - Warm Artisan Loom Studio Atmosphere
-  const ambientLight = new THREE.AmbientLight(0xFFF7EC, 0.85);
+  // Lighting - Warm Studio Atmosphere for Natural Cotton Fibers
+  const ambientLight = new THREE.AmbientLight(0xFFF8EF, 0.85);
   threeScene.add(ambientLight);
 
-  const keyLight = new THREE.DirectionalLight(0xFFFFFF, 1.1);
-  keyLight.position.set(10, 15, 10);
+  const keyLight = new THREE.DirectionalLight(0xFFFFFF, 1.15);
+  keyLight.position.set(9, 14, 9);
   keyLight.castShadow = true;
   keyLight.shadow.mapSize.width = 1024;
   keyLight.shadow.mapSize.height = 1024;
   threeScene.add(keyLight);
 
-  const fillLight = new THREE.DirectionalLight(0xD4A373, 0.5);
-  fillLight.position.set(-10, 6, -8);
+  const fillLight = new THREE.DirectionalLight(0xE0C8B0, 0.55);
+  fillLight.position.set(-10, 6, -6);
   threeScene.add(fillLight);
 
-  const rimLight = new THREE.DirectionalLight(0xC86D51, 0.4);
-  rimLight.position.set(0, -5, 10);
+  const rimLight = new THREE.DirectionalLight(0xFFEEDD, 0.65);
+  rimLight.position.set(0, 8, -9);
   threeScene.add(rimLight);
 
-  // Build the Spool 3D Model
+  // Build the Single Continuous Strand Coiled Reel 3D Model
   createSpoolMesh();
 
   // Create HUD Color Swatches
@@ -348,15 +354,22 @@ function initThreeExperience() {
     threeRenderer.setSize(newW, newH);
   });
 
-  // Render Loop
+  // Render Loop with Smooth Camera Transitions and Auto-Rotation
   function animate() {
     requestAnimationFrame(animate);
 
-    if (isAutoRotating && threeSpoolGroup) {
-      threeSpoolGroup.rotation.y += 0.0075;
+    if (isAutoRotating && threeSpoolGroup && !isZoomedToCore) {
+      threeSpoolGroup.rotation.y += 0.006;
     }
 
-    if (threeControls) {
+    if (isCameraTransitioning && threeCamera && threeControls) {
+      threeCamera.position.lerp(targetCamPos, 0.08);
+      threeControls.target.lerp(targetLookAt, 0.08);
+      threeControls.update();
+      if (threeCamera.position.distanceTo(targetCamPos) < 0.03) {
+        isCameraTransitioning = false;
+      }
+    } else if (threeControls) {
       threeControls.update();
     }
 
@@ -366,108 +379,163 @@ function initThreeExperience() {
 }
 
 /**
- * Generate an ultra-high resolution procedural 1024x1024 bump and normal texture
- * reproducing a 16-carrier tubular diamond-braided combed cotton rope with individual spun fiber striations
+ * Procedural Herringbone / Chevron Braided Cotton Textures
+ * Reproducing the exact knit weave from user reference photos (Photos 1, 2, 4, 5)
  */
-function createHighResBraidedTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 1024;
-  const ctx = canvas.getContext('2d');
+function createChevronBraidTextures() {
+  // 1. Diffuse / Color Map (Cotton grain + weave seams + fiber striations)
+  const canvasDiff = document.createElement('canvas');
+  canvasDiff.width = 1024;
+  canvasDiff.height = 1024;
+  const ctxD = canvasDiff.getContext('2d');
 
-  // Neutral mid-gray base for bump mapping
-  ctx.fillStyle = '#808080';
-  ctx.fillRect(0, 0, 1024, 1024);
+  ctxD.fillStyle = '#FAF7F2';
+  ctxD.fillRect(0, 0, 1024, 1024);
 
-  const numBands = 32;
-  const bandWidth = 1024 / (numBands / 2); // ~64px wide
+  // 2. Bump Map (Tactile 3D relief for braided ridges)
+  const canvasBump = document.createElement('canvas');
+  canvasBump.width = 1024;
+  canvasBump.height = 1024;
+  const ctxB = canvasBump.getContext('2d');
 
-  // Direction 1: 16 strands traveling diagonally (top-left to bottom-right)
-  for (let b = -numBands; b < numBands * 2; b++) {
-    const x0 = b * bandWidth;
-    
-    // Rounded 3D yarn ribbon gradient
-    const grad1 = ctx.createLinearGradient(x0, 0, x0 + bandWidth, 0);
-    grad1.addColorStop(0, '#282828');     // Shadow seam
-    grad1.addColorStop(0.2, '#959595');   // Shoulder
-    grad1.addColorStop(0.5, '#FFFFFF');   // Rounded crest highlight
-    grad1.addColorStop(0.8, '#A0A0A0');   // Shoulder
-    grad1.addColorStop(1, '#202020');     // Shadow seam
+  ctxB.fillStyle = '#808080';
+  ctxB.fillRect(0, 0, 1024, 1024);
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(x0, 0);
-    ctx.lineTo(x0 + 1024, 1024);
-    ctx.lineTo(x0 + bandWidth + 1024, 1024);
-    ctx.lineTo(x0 + bandWidth, 0);
-    ctx.closePath();
-    ctx.fillStyle = grad1;
-    ctx.fill();
+  const numColumns = 8;
+  const colWidth = 1024 / numColumns; // 128px per column
+  const stitchHeight = 44;
+  const numRows = Math.ceil(1024 / stitchHeight) + 2;
 
-    // Individual spun fiber striations inside this yarn bundle
-    for (let f = 1; f < 6; f++) {
-      const fx = x0 + (f * bandWidth / 6);
-      ctx.strokeStyle = (f % 2 === 0) ? 'rgba(255, 255, 255, 0.28)' : 'rgba(0, 0, 0, 0.32)';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(fx, 0);
-      ctx.lineTo(fx + 1024, 1024);
-      ctx.stroke();
+  for (let c = 0; c < numColumns; c++) {
+    const xBase = c * colWidth;
+    const isAlternating = c % 2 === 1;
+
+    for (let r = -1; r <= numRows; r++) {
+      const yBase = r * stitchHeight + (isAlternating ? stitchHeight * 0.5 : 0);
+
+      // --- Left wing of Chevron V (angles down to center) ---
+      // Diffuse gradient
+      const gradLeftD = ctxD.createLinearGradient(xBase, yBase, xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      gradLeftD.addColorStop(0, '#D6C8B4');
+      gradLeftD.addColorStop(0.3, '#EFEAE0');
+      gradLeftD.addColorStop(0.6, '#FFFFFF');
+      gradLeftD.addColorStop(0.85, '#EAE4DA');
+      gradLeftD.addColorStop(1, '#CDC0AF');
+
+      ctxD.save();
+      ctxD.beginPath();
+      ctxD.moveTo(xBase, yBase);
+      ctxD.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      ctxD.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight);
+      ctxD.lineTo(xBase, yBase + stitchHeight * 0.5);
+      ctxD.closePath();
+      ctxD.fillStyle = gradLeftD;
+      ctxD.fill();
+
+      // Fiber striations
+      for (let s = 1; s <= 3; s++) {
+        const offset = s * (stitchHeight * 0.12);
+        ctxD.strokeStyle = s % 2 === 0 ? 'rgba(255, 255, 255, 0.4)' : 'rgba(80, 60, 45, 0.15)';
+        ctxD.lineWidth = 1.6;
+        ctxD.beginPath();
+        ctxD.moveTo(xBase, yBase + offset);
+        ctxD.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5 + offset);
+        ctxD.stroke();
+      }
+      ctxD.restore();
+
+      // Bump gradient
+      const gradLeftB = ctxB.createLinearGradient(xBase, yBase, xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      gradLeftB.addColorStop(0, '#282828');
+      gradLeftB.addColorStop(0.3, '#909090');
+      gradLeftB.addColorStop(0.55, '#FFFFFF');
+      gradLeftB.addColorStop(0.85, '#959595');
+      gradLeftB.addColorStop(1, '#222222');
+
+      ctxB.save();
+      ctxB.beginPath();
+      ctxB.moveTo(xBase, yBase);
+      ctxB.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      ctxB.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight);
+      ctxB.lineTo(xBase, yBase + stitchHeight * 0.5);
+      ctxB.closePath();
+      ctxB.fillStyle = gradLeftB;
+      ctxB.fill();
+      ctxB.restore();
+
+      // --- Right wing of Chevron V (angles up from center) ---
+      // Diffuse gradient
+      const gradRightD = ctxD.createLinearGradient(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5, xBase + colWidth, yBase);
+      gradRightD.addColorStop(0, '#CDC0AF');
+      gradRightD.addColorStop(0.25, '#EAE4DA');
+      gradRightD.addColorStop(0.55, '#FFFFFF');
+      gradRightD.addColorStop(0.85, '#EFEAE0');
+      gradRightD.addColorStop(1, '#D6C8B4');
+
+      ctxD.save();
+      ctxD.beginPath();
+      ctxD.moveTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      ctxD.lineTo(xBase + colWidth, yBase);
+      ctxD.lineTo(xBase + colWidth, yBase + stitchHeight * 0.5);
+      ctxD.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight);
+      ctxD.closePath();
+      ctxD.fillStyle = gradRightD;
+      ctxD.fill();
+
+      // Fiber striations
+      for (let s = 1; s <= 3; s++) {
+        const offset = s * (stitchHeight * 0.12);
+        ctxD.strokeStyle = s % 2 === 0 ? 'rgba(255, 255, 255, 0.4)' : 'rgba(80, 60, 45, 0.15)';
+        ctxD.lineWidth = 1.6;
+        ctxD.beginPath();
+        ctxD.moveTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5 + offset);
+        ctxD.lineTo(xBase + colWidth, yBase + offset);
+        ctxD.stroke();
+      }
+      ctxD.restore();
+
+      // Bump gradient
+      const gradRightB = ctxB.createLinearGradient(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5, xBase + colWidth, yBase);
+      gradRightB.addColorStop(0, '#222222');
+      gradRightB.addColorStop(0.25, '#929292');
+      gradRightB.addColorStop(0.55, '#F8F8F8');
+      gradRightB.addColorStop(0.85, '#8E8E8E');
+      gradRightB.addColorStop(1, '#252525');
+
+      ctxB.save();
+      ctxB.beginPath();
+      ctxB.moveTo(xBase + colWidth * 0.5, yBase + stitchHeight * 0.5);
+      ctxB.lineTo(xBase + colWidth, yBase);
+      ctxB.lineTo(xBase + colWidth, yBase + stitchHeight * 0.5);
+      ctxB.lineTo(xBase + colWidth * 0.5, yBase + stitchHeight);
+      ctxB.closePath();
+      ctxB.fillStyle = gradRightB;
+      ctxB.fill();
+      ctxB.restore();
     }
-    ctx.restore();
   }
 
-  // Direction 2: 16 strands traveling diagonally (top-right to bottom-left)
-  for (let b = -numBands; b < numBands * 2; b++) {
-    const x0 = b * bandWidth;
-
-    const grad2 = ctx.createLinearGradient(x0, 0, x0 + bandWidth, 0);
-    grad2.addColorStop(0, '#1E1E1E');
-    grad2.addColorStop(0.25, '#888888');
-    grad2.addColorStop(0.5, '#F0F0F0');
-    grad2.addColorStop(0.75, '#909090');
-    grad2.addColorStop(1, '#181818');
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(x0, 0);
-    ctx.lineTo(x0 - 1024, 1024);
-    ctx.lineTo(x0 + bandWidth - 1024, 1024);
-    ctx.lineTo(x0 + bandWidth, 0);
-    ctx.closePath();
-    ctx.fillStyle = grad2;
-    ctx.fill();
-
-    // Spun fiber micro-threads
-    for (let f = 1; f < 6; f++) {
-      const fx = x0 + (f * bandWidth / 6);
-      ctx.strokeStyle = (f % 2 === 0) ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.3)';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(fx, 0);
-      ctx.lineTo(fx - 1024, 1024);
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  // Soft organic cotton micro-fuzz / fiber noise
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
+  // Micro-fuzz natural cotton fibers
+  ctxD.fillStyle = 'rgba(255, 255, 255, 0.04)';
   for (let i = 0; i < 9000; i++) {
-    const rx = Math.random() * 1024;
-    const ry = Math.random() * 1024;
-    ctx.fillRect(rx, ry, 1.5, 1.5);
+    ctxD.fillRect(Math.random() * 1024, Math.random() * 1024, 1.5, 1.5);
   }
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(32, 4); // Scaled for authentic 6.0 mm cord diamond proportion
-  return texture;
+  const diffTex = new THREE.CanvasTexture(canvasDiff);
+  diffTex.wrapS = THREE.RepeatWrapping;
+  diffTex.wrapT = THREE.RepeatWrapping;
+  diffTex.repeat.set(130, 6);
+
+  const bumpTex = new THREE.CanvasTexture(canvasBump);
+  bumpTex.wrapS = THREE.RepeatWrapping;
+  bumpTex.wrapT = THREE.RepeatWrapping;
+  bumpTex.repeat.set(130, 6);
+
+  return { diffTex, bumpTex };
 }
 
 /**
- * Generate soft contact shadow texture under the cord
+ * Soft contact shadow texture under the coiled reel base
  */
 function createShadowTexture() {
   const canvas = document.createElement('canvas');
@@ -475,9 +543,9 @@ function createShadowTexture() {
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
 
-  const gradient = ctx.createRadialGradient(128, 128, 10, 128, 128, 120);
-  gradient.addColorStop(0, 'rgba(43, 27, 23, 0.45)');
-  gradient.addColorStop(0.5, 'rgba(43, 27, 23, 0.15)');
+  const gradient = ctx.createRadialGradient(128, 128, 20, 128, 128, 122);
+  gradient.addColorStop(0, 'rgba(43, 27, 23, 0.6)');
+  gradient.addColorStop(0.5, 'rgba(43, 27, 23, 0.22)');
   gradient.addColorStop(1, 'rgba(43, 27, 23, 0)');
 
   ctx.fillStyle = gradient;
@@ -487,126 +555,204 @@ function createShadowTexture() {
 }
 
 /**
- * Assemble a Single Ultra-Textured Braided Cotton Cord Strand with Exposed 3D Core ("El Alma")
- * (No labels, no spools, completely pure textile focus)
+ * Assemble 3D Artisanal Single-Strand Coiled Reel with Golden Aglet and 3D Inner Core
+ * Based strictly on user reference photos (Photos 1, 2, 3, 4, 5)
+ * ONE SINGLE CONTINUOUS CORD STRAND FROM START TO FINISH
  */
 function createSpoolMesh() {
   threeSpoolGroup = new THREE.Group();
 
-  // 1. Ultra-Textured Braided Cotton Sheath Material
-  const bumpTex = createHighResBraidedTexture();
+  // 1. Ultra-Textured Chevron Braided Cotton Material
+  const { diffTex, bumpTex } = createChevronBraidTextures();
   threeCordMaterial = new THREE.MeshStandardMaterial({
     color: active3DColor.threeColor,
-    roughness: 0.94,
-    metalness: 0.01,
+    map: diffTex,
     bumpMap: bumpTex,
-    bumpScale: 0.12
+    bumpScale: 0.16,
+    roughness: 0.88,
+    metalness: 0.02
   });
 
-  // Cross-section cut wall material (matches the active cord color)
-  threeCutWallMaterial = new THREE.MeshStandardMaterial({
-    color: active3DColor.threeColor,
-    roughness: 0.95,
-    metalness: 0.0,
-    side: THREE.DoubleSide
-  });
+  const cordRadius = 0.22; // 6.0 mm scale
 
-  // 2. Continuous Organic 3D Curve for the Single Cord Strand
-  // Curves through the studio space, bringing the cut tip right toward the camera
-  const cordRadius = 0.38; // 6.0 mm scale
-  const cordPoints = [
-    new THREE.Vector3(-4.8, -0.7, -1.8),
-    new THREE.Vector3(-3.2, 1.2, -0.9),
-    new THREE.Vector3(-1.6, -0.7, 0.1),
-    new THREE.Vector3(0.1, 0.9, 0.8),
-    new THREE.Vector3(1.7, -0.4, 1.4),
-    new THREE.Vector3(2.8, 0.3, 2.0),
-    new THREE.Vector3(3.5, 0.0, 2.4)  // Cut tip position
+  // 2. Build the ONE Single Continuous 3D Cord Path:
+  // Starts at the inner center of the reel, coils outwards in an oval spiral (Base),
+  // seamlessly rises to form the raised rim (Lip), and sweeps gracefully into mid-air (Arch)
+  const cordPoints = [];
+
+  // Part A: Oval Spiral Base (5.25 concentric turns touching side-by-side)
+  const rMin = 0.38;
+  const turnsBase = 5.25;
+  const stepsBase = 260;
+  const radialPitch = 0.435; // cordRadius * 2 = 0.44 -> touching snugly!
+
+  for (let i = 0; i <= stepsBase; i++) {
+    const f = i / stepsBase;
+    const angle = f * turnsBase * Math.PI * 2;
+    const r = rMin + f * (turnsBase * radialPitch);
+    const x = Math.cos(angle) * (r * 1.34);
+    const z = Math.sin(angle) * r;
+    const y = 0.0;
+    cordPoints.push(new THREE.Vector3(x, y, z));
+  }
+
+  // Part B: Raised Outer Rim / Lip (1.0 turn ascending to Y = 0.44)
+  const stepsRim = 60;
+  const rOuter = rMin + (turnsBase * radialPitch); // ~2.664
+  for (let j = 1; j <= stepsRim; j++) {
+    const fb = j / stepsRim;
+    const angle = (turnsBase + fb * 1.0) * Math.PI * 2;
+    const x = Math.cos(angle) * (rOuter * 1.34);
+    const z = Math.sin(angle) * rOuter;
+    const y = fb * 0.44;
+    cordPoints.push(new THREE.Vector3(x, y, z));
+  }
+
+  // Part C: The Sweeping 3D Arched Strand ("Una sola tira de cordón")
+  // Smoothly takes off tangential to the rim and arches gracefully over the reel toward the viewer
+  const arcPoints = [
+    new THREE.Vector3(-1.4, 0.95, 2.4),
+    new THREE.Vector3(-2.4, 1.55, 1.5),
+    new THREE.Vector3(-1.8, 1.95, 0.2),
+    new THREE.Vector3(0.2, 1.85, -0.6),
+    new THREE.Vector3(1.8, 1.45, 0.4),
+    new THREE.Vector3(2.8, 1.05, 1.4),
+    new THREE.Vector3(3.4, 0.68, 2.1) // Tip termination with gold aglet & core!
   ];
-  const cordCurve = new THREE.CatmullRomCurve3(cordPoints, false, 'catmullrom', 0.5);
+  arcPoints.forEach(pt => cordPoints.push(pt));
 
-  // Outer Braided Jacket Tube Geometry (160 segments for silky smooth curve)
-  const sheathGeom = new THREE.TubeGeometry(cordCurve, 160, cordRadius, 24, false);
-  const sheathMesh = new THREE.Mesh(sheathGeom, threeCordMaterial);
-  sheathMesh.castShadow = true;
-  sheathMesh.receiveShadow = true;
-  threeSpoolGroup.add(sheathMesh);
+  // Generate ONE Single Continuous Spline & Tube Geometry
+  const fullCordCurve = new THREE.CatmullRomCurve3(cordPoints, false, 'centripetal', 0.15);
+  const fullCordGeom = new THREE.TubeGeometry(fullCordCurve, 380, cordRadius, 16, false);
+  const fullCordMesh = new THREE.Mesh(fullCordGeom, threeCordMaterial);
+  fullCordMesh.castShadow = true;
+  fullCordMesh.receiveShadow = true;
+  threeSpoolGroup.add(fullCordMesh);
 
-  // Tangent and position at the cut tip
-  const tipPos = cordCurve.getPointAt(1.0);
-  const tipTangent = cordCurve.getTangentAt(1.0).normalize();
-  const ringQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), tipTangent);
+  // 3. Rounded Start Cap at the center of the reel (t = 0.0)
+  const startPos = fullCordCurve.getPointAt(0.0);
+  const startTangent = fullCordCurve.getTangentAt(0.0).normalize();
+  const startCapGeom = new THREE.SphereGeometry(cordRadius, 16, 16);
+  startCapGeom.scale(1.0, 1.0, 0.4);
+  const startQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), startTangent);
+  const startCap = new THREE.Mesh(startCapGeom, threeCordMaterial);
+  startCap.position.copy(startPos);
+  startCap.quaternion.copy(startQuat);
+  threeSpoolGroup.add(startCap);
 
-  // 3. Cut Sheath Wall Ring (Cross-section showing the thickness of the cotton jacket)
-  // Outer radius 0.38, inner radius 0.22 (hollow interior cavity where core sits)
-  const cutWallGeom = new THREE.RingGeometry(0.22, 0.38, 32);
-  const cutWallMesh = new THREE.Mesh(cutWallGeom, threeCutWallMaterial);
-  cutWallMesh.position.copy(tipPos);
-  cutWallMesh.quaternion.copy(ringQuat);
-  threeSpoolGroup.add(cutWallMesh);
+  // 4. Artisanal Zigzag Sewing Stitches between base coils (Photos 1 & 2)
+  // Replicating the handcrafted sewing machine zigzag stitch that binds adjacent rope coils
+  const stitchPositions = [];
+  for (let turn = 1; turn <= 4; turn++) {
+    const stepsPerTurn = 44;
+    for (let s = 0; s < stepsPerTurn; s++) {
+      const a1 = (s / stepsPerTurn) * Math.PI * 2;
+      const a2 = ((s + 0.5) / stepsPerTurn) * Math.PI * 2;
+      const rMid = rMin + turn * radialPitch;
+      const x1 = Math.cos(a1) * ((rMid - 0.09) * 1.34);
+      const z1 = Math.sin(a1) * (rMid - 0.09);
+      const x2 = Math.cos(a2) * ((rMid + 0.09) * 1.34);
+      const z2 = Math.sin(a2) * (rMid + 0.09);
+      stitchPositions.push(x1, 0.13, z1, x2, 0.13, z2);
+    }
+  }
+  const stitchGeom = new THREE.BufferGeometry();
+  stitchGeom.setAttribute('position', new THREE.Float32BufferAttribute(stitchPositions, 3));
+  const stitchMat = new THREE.LineBasicMaterial({
+    color: 0xD4C2AA,
+    transparent: true,
+    opacity: 0.72
+  });
+  const stitchLines = new THREE.LineSegments(stitchGeom, stitchMat);
+  threeSpoolGroup.add(stitchLines);
 
-  // 4. THE 3D INNER CORE ("EL ALMA") - Visible when zooming in!
-  // High-tenacity polyester multifilament core bundle protruding out of the cut tip
+  // Tangent and position at the cut tip (t = 1.0)
+  const tipPos = fullCordCurve.getPointAt(1.0);
+  const tipTangent = fullCordCurve.getTangentAt(1.0).normalize();
+  const tipQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), tipTangent);
+
+  // 5. Polished Golden Brass Aglet (Puntera Metálica de Latón Dorado, Photos 2, 3, 5)
+  const agletGroup = new THREE.Group();
+  const agletMat = new THREE.MeshStandardMaterial({
+    color: 0xD4AF37,      // 18k polished golden brass
+    metalness: 0.94,
+    roughness: 0.18
+  });
+
+  // Main aglet ferrule cylinder
+  const agletLength = 0.42;
+  const agletRadius = cordRadius * 1.08;
+  const agletMainGeom = new THREE.CylinderGeometry(agletRadius, agletRadius, agletLength, 24, 1, false);
+  agletMainGeom.rotateX(Math.PI / 2);
+  const agletMainMesh = new THREE.Mesh(agletMainGeom, agletMat);
+  agletMainMesh.castShadow = true;
+  agletGroup.add(agletMainMesh);
+
+  // Rear collar ring
+  const rearRingGeom = new THREE.CylinderGeometry(agletRadius * 1.08, agletRadius * 1.08, 0.08, 24);
+  rearRingGeom.rotateX(Math.PI / 2);
+  const rearRingMesh = new THREE.Mesh(rearRingGeom, agletMat);
+  rearRingMesh.position.set(0, 0, -agletLength * 0.45);
+  agletGroup.add(rearRingMesh);
+
+  // Front bezel ring
+  const frontRingGeom = new THREE.CylinderGeometry(agletRadius * 1.04, agletRadius * 1.04, 0.04, 24);
+  frontRingGeom.rotateX(Math.PI / 2);
+  const frontRingMesh = new THREE.Mesh(frontRingGeom, agletMat);
+  frontRingMesh.position.set(0, 0, agletLength * 0.48);
+  agletGroup.add(frontRingMesh);
+
+  agletGroup.position.copy(tipPos);
+  agletGroup.quaternion.copy(tipQuat);
+  threeSpoolGroup.add(agletGroup);
+  agletMeshRef = agletGroup; // Save reference for world-space macro zoom targeting
+
+  // 6. Exposed 3D Inner Core ("El Alma") in full 3D!
+  // Protrudes forward through and beyond the brass aglet by 0.72 units
   const coreGroup = new THREE.Group();
-  
-  // Core Material: Bright white synthetic fiber luster, distinct from the cotton sheath
   const coreMat = new THREE.MeshStandardMaterial({
     color: 0xFCFCFC,
-    roughness: 0.32,
-    metalness: 0.05
+    roughness: 0.28,
+    metalness: 0.04
   });
 
-  const coreLength = 1.1; // Protrudes forward from the jacket
-
-  // A. Central inner fiber core cylinder
-  const centerCoreGeom = new THREE.CylinderGeometry(0.12, 0.12, coreLength, 16);
-  centerCoreGeom.rotateX(Math.PI / 2); // Align along Z axis
+  const coreLength = 0.72;
+  // A. Central core fiber cylinder
+  const centerCoreGeom = new THREE.CylinderGeometry(0.085, 0.085, coreLength, 16);
+  centerCoreGeom.rotateX(Math.PI / 2);
   const centerCoreMesh = new THREE.Mesh(centerCoreGeom, coreMat);
-  centerCoreMesh.position.set(0, 0, coreLength * 0.25);
+  centerCoreMesh.position.set(0, 0, coreLength * 0.45);
   coreGroup.add(centerCoreMesh);
 
-  // B. 8 Individual twisted micro-filament fiber strands forming the core cluster
+  // B. 8 Twisted micro-filament fiber strands forming the multifilament core cluster
   const filamentCount = 8;
-  const filamentRadius = 0.048;
+  const filamentRadius = 0.032;
   for (let f = 0; f < filamentCount; f++) {
     const baseAngle = (f / filamentCount) * Math.PI * 2;
     const strandPts = [];
-    const steps = 18;
+    const steps = 16;
     for (let s = 0; s <= steps; s++) {
-      const z = -0.3 + (s / steps) * (coreLength + 0.3);
-      // Twist along length simulating real twisted multifilament core yarn
-      const twistAngle = baseAngle + (s / steps) * Math.PI * 1.5;
-      // Slight splay at the very tip for natural cut fiber look
-      const splay = s > (steps - 3) ? 1.0 + (s - (steps - 3)) * 0.12 : 1.0;
-      const dist = 0.14 * splay;
+      const z = (s / steps) * coreLength;
+      const twistAngle = baseAngle + (s / steps) * Math.PI * 1.8;
+      const splay = s > (steps - 3) ? 1.0 + (s - (steps - 3)) * 0.16 : 1.0;
+      const dist = 0.09 * splay;
       const x = Math.cos(twistAngle) * dist;
       const y = Math.sin(twistAngle) * dist;
       strandPts.push(new THREE.Vector3(x, y, z));
     }
     const filamentCurve = new THREE.CatmullRomCurve3(strandPts);
-    const filamentGeom = new THREE.TubeGeometry(filamentCurve, 20, filamentRadius, 8, false);
+    const filamentGeom = new THREE.TubeGeometry(filamentCurve, 16, filamentRadius, 8, false);
     const filamentMesh = new THREE.Mesh(filamentGeom, coreMat);
     filamentMesh.castShadow = true;
     coreGroup.add(filamentMesh);
   }
 
-  // Position and orient the core group exactly at the cut tip aligned with the rope tangent!
+  // Attach core group at the tip extending along the tangent vector
   coreGroup.position.copy(tipPos);
-  coreGroup.quaternion.copy(ringQuat);
+  coreGroup.quaternion.copy(tipQuat);
   threeSpoolGroup.add(coreGroup);
 
-  // 5. Opposite End Cap (Tidy finished end on left side at t=0)
-  const leftPos = cordCurve.getPointAt(0.0);
-  const leftTangent = cordCurve.getTangentAt(0.0).normalize();
-  const leftCapGeom = new THREE.SphereGeometry(cordRadius, 16, 16);
-  leftCapGeom.scale(1.0, 1.0, 0.3);
-  const leftQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), leftTangent);
-  const leftCap = new THREE.Mesh(leftCapGeom, threeCordMaterial);
-  leftCap.position.copy(leftPos);
-  leftCap.quaternion.copy(leftQuat);
-  threeSpoolGroup.add(leftCap);
-
-  // 6. Subtle Contact Studio Shadow Plane
+  // 7. Contact Ground Shadow Plane
   const shadowTex = createShadowTexture();
   const shadowMat = new THREE.MeshBasicMaterial({
     map: shadowTex,
@@ -614,13 +760,15 @@ function createSpoolMesh() {
     opacity: 0.55,
     depthWrite: false
   });
-  const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), shadowMat);
+  const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(11, 9), shadowMat);
   shadowPlane.rotation.x = -Math.PI / 2;
-  shadowPlane.position.y = -1.4;
+  shadowPlane.position.y = -0.32;
   threeSpoolGroup.add(shadowPlane);
 
-  // Position group in center
-  threeSpoolGroup.position.set(-0.3, 0.0, 0);
+  // Studio tilt angle for optimal 3D perception
+  threeSpoolGroup.rotation.x = 0.42;
+  threeSpoolGroup.rotation.y = -0.25;
+  threeSpoolGroup.position.set(-0.2, -0.35, 0);
 
   threeScene.add(threeSpoolGroup);
 }
@@ -650,15 +798,12 @@ function render3DColorSwatches() {
 }
 
 /**
- * Change the color of the 3D cord material and cut wall
+ * Change the color of the 3D cord material in real time
  */
 function set3DSpoolColor(color) {
   active3DColor = color;
   if (threeCordMaterial) {
     threeCordMaterial.color.setHex(color.threeColor);
-  }
-  if (threeCutWallMaterial) {
-    threeCutWallMaterial.color.setHex(color.threeColor);
   }
 
   // Update active dot in HUD
@@ -675,7 +820,7 @@ function set3DSpoolColor(color) {
 }
 
 /**
- * Setup buttons for 3D controls (Pause, Reset, Zoom to Core)
+ * Setup buttons for 3D controls (Pause, Reset, Macro Zoom to Core)
  */
 function setup3DControls() {
   const toggleBtn = document.getElementById('btn-spool-toggle-spin');
@@ -692,41 +837,50 @@ function setup3DControls() {
     });
   }
 
-  // Button to zoom in directly to the exposed 3D inner core ("El Alma")
+  // Button to smoothly glide the camera to the exposed 3D inner core & golden aglet
   if (zoomCoreBtn) {
-    let isZoomedToCore = false;
     zoomCoreBtn.addEventListener('click', () => {
       isZoomedToCore = !isZoomedToCore;
+      isCameraTransitioning = true;
+
       if (isZoomedToCore) {
-        if (threeControls && threeCamera) {
-          threeControls.target.set(3.4, 0.0, 2.4);
-          threeCamera.position.set(4.2, 0.5, 4.3);
-          threeControls.update();
-          showToast('🔍 Vista Macro: Inspección del Alma interna en 3D');
-          zoomCoreBtn.classList.add('active');
-          zoomCoreBtn.title = 'Volver a vista completa';
+        isAutoRotating = false;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+          toggleBtn.title = 'Reanudar rotación';
         }
+
+        const tipWorld = new THREE.Vector3();
+        if (agletMeshRef) {
+          agletMeshRef.getWorldPosition(tipWorld);
+        } else {
+          tipWorld.set(2.8, 0.6, 1.8);
+        }
+
+        targetLookAt.copy(tipWorld);
+        targetCamPos.set(tipWorld.x + 0.65, tipWorld.y + 0.4, tipWorld.z + 1.35);
+        showToast('🔍 Vista Macro: Puntera dorada y Alma interna 3D');
+        zoomCoreBtn.classList.add('active');
+        zoomCoreBtn.title = 'Volver a vista completa';
       } else {
-        if (threeControls && threeCamera) {
-          threeControls.target.set(0, 0, 0);
-          threeCamera.position.set(0, 1.8, 8.5);
-          threeControls.update();
-          zoomCoreBtn.classList.remove('active');
-          zoomCoreBtn.title = 'Hacer zoom macro al alma interna en 3D';
-        }
+        targetLookAt.set(0, 0.4, 0.5);
+        targetCamPos.set(0, 3.2, 7.8);
+        zoomCoreBtn.classList.remove('active');
+        zoomCoreBtn.title = 'Hacer zoom macro al alma interna en 3D';
       }
     });
   }
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      if (threeControls && threeCamera && threeSpoolGroup) {
-        threeControls.reset();
-        threeControls.target.set(0, 0, 0);
-        threeCamera.position.set(0, 1.8, 8.5);
-        threeSpoolGroup.rotation.set(0, 0, 0);
-        if (zoomCoreBtn) zoomCoreBtn.classList.remove('active');
+      isZoomedToCore = false;
+      isCameraTransitioning = true;
+      targetLookAt.set(0, 0.4, 0.5);
+      targetCamPos.set(0, 3.2, 7.8);
+      if (threeSpoolGroup) {
+        threeSpoolGroup.rotation.set(0.42, -0.25, 0);
       }
+      if (zoomCoreBtn) zoomCoreBtn.classList.remove('active');
     });
   }
 }

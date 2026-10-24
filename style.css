@@ -677,10 +677,12 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-.hud-btn:hover {
+.hud-btn:hover,
+.hud-btn.active {
   background: var(--color-terracotta);
   color: #FFFFFF;
   border-color: var(--color-terracotta);
+  box-shadow: 0 0 14px rgba(200, 109, 81, 0.55);
 }
 
 /* 3D Spool Color Swapper Bar */
